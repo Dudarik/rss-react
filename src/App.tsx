@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import { Routes, Route } from 'react-router-dom';
-
-import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
-import NotFoundPage from './pages/NotFoundPage';
 
 import MainNav from './components/MainNav';
 
 import AppStyles from './App.module.scss';
+import Router from './Router';
 
 class App extends Component {
   render() {
@@ -15,11 +11,7 @@ class App extends Component {
       <>
         <header>
           <MainNav />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
+          <Router />
         </header>
         <div className={AppStyles.App}></div>
         <footer></footer>
