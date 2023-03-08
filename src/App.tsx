@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
-
+import Root from '@/components/Root';
 import Header from '@/components/Header';
-import Router from '@/Router';
-
-import AppStyles from './App.module.scss';
+import Footer from '@/components/Footer';
 
 class App extends Component {
   render() {
     return (
       <>
         <Header />
-        <div className={AppStyles.App}>
-          <Router />
-        </div>
-        <footer></footer>
+        <Root />
+        <Footer />
       </>
     );
   }
