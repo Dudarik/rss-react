@@ -1,3 +1,4 @@
+import SearchBar from '@/components/SearchBar';
 import React, { Component } from 'react';
 
 class HomePage extends Component {
@@ -5,6 +6,7 @@ class HomePage extends Component {
     return (
       <main className="main">
         <h1>This is a HOME page</h1>
+        <SearchBar />
       </main>
     );
   }
