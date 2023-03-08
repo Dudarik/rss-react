@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Routes, Route, NavLink } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
+
+import MainNav from './components/MainNav';
 
 import AppStyles from './App.module.scss';
 
@@ -12,9 +14,7 @@ class App extends Component {
     return (
       <>
         <header>
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="/about">About us</NavLink>
-          <NavLink to="/item">item</NavLink>
+          <MainNav />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
