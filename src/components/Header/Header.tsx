@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 
-import MainNav from '../MainNav';
-import Router from '../../Router';
+import MainNav from '@/components/MainNav';
 
 class Header extends Component {
   render() {
     return (
       <header>
         <MainNav />
-        <Router />
       </header>
     );
   }
