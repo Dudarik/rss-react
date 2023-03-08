@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 
-import MainNav from './components/MainNav';
-
 import AppStyles from './App.module.scss';
-import Router from './Router';
+
+import Header from './components/Header';
 
 class App extends Component {
   render() {
     return (
       <>
-        <header>
-          <MainNav />
-          <Router />
-        </header>
+        <Header />
         <div className={AppStyles.App}></div>
         <footer></footer>
       </>
