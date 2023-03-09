@@ -2,6 +2,7 @@ import { IGameData } from '../../interfaces/cardsIterfaces';
 import React, { Component, ReactNode } from 'react';
 
 const PATH_TO_IMG = 'assets/images/games_webp/';
+
 class Card extends Component<IGameData> {
   constructor(props: IGameData) {
     super(props);
@@ -11,7 +12,7 @@ class Card extends Component<IGameData> {
     const url = new URL(location.href);
     const host = url.host;
     const protocol = url.protocol;
-    const imgUrl = new URL(`${protocol}://${host}/${PATH_TO_IMG}${image}`);
+    const imgUrl = new URL(`${protocol}//${host}/${PATH_TO_IMG}${image}`);
 
     return (
       <li className="card">
