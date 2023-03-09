@@ -10,7 +10,6 @@ class Root extends Component {
         <div className={AppStyles.App}>
           <Router />
         </div>
-        <footer></footer>
       </>
     );
   }
