@@ -1,4 +1,6 @@
-import React, { ChangeEvent, Component, MouseEvent } from 'react';
+import React, { ChangeEvent, Component, MouseEvent, ReactNode } from 'react';
+
+const LS_KEY = 'dudarik_rss_react_searchString';
 
 class SearchBar extends Component {
   state = {
@@ -17,7 +19,17 @@ class SearchBar extends Component {
     this.setState({ [target.name]: target.value });
   };
 
-  render() {
+  componentDidMount = () => {
+    const lsSearchString = localStorage.getItem(LS_KEY);
+
+    if (lsSearchString) this.setState({ searchString: lsSearchString });
+  };
+
+  componentWillUnmount = () => {
+    if (this.state.searchString.length > 0) localStorage.setItem(LS_KEY, this.state.searchString);
+  };
+
+  render(): ReactNode {
     return (
       <form>
         <input
