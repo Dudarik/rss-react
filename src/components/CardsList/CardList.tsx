@@ -1,5 +1,5 @@
-import { getGamesData } from '@/helpers';
-import { IGamesData } from '@/interfaces/cardsIterfaces';
+import { getGamesData } from '../../helpers';
+import { IGamesData } from '../../interfaces/cardsIterfaces';
 import React, { Component, ReactNode } from 'react';
 import Card from '../Card';
 

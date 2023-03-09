@@ -1,5 +1,5 @@
-import CardsList from '@/components/CardsList';
-import SearchBar from '@/components/SearchBar';
+import CardsList from '../components/CardsList';
+import SearchBar from '../components/SearchBar';
 import React, { Component } from 'react';
 
 class HomePage extends Component {
