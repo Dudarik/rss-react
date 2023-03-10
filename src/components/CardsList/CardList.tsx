@@ -1,7 +1,12 @@
 import { getGamesData } from '../../helpers';
+
 import { IGamesData } from '../../interfaces/cardsIterfaces';
+
 import React, { Component, ReactNode } from 'react';
+
 import Card from '../Card';
+
+import styles from './CardList.module.scss';
 
 class CardsList extends Component {
   state: IGamesData = {
@@ -22,7 +27,7 @@ class CardsList extends Component {
   }
   render(): ReactNode {
     return (
-      <ul className="cardsList">
+      <ul className={styles.card_list}>
         {this.state.games.map((gameCard) => (
           <Card key={gameCard.id} {...gameCard} />
         ))}
