@@ -24,14 +24,6 @@ class MainNav extends Component {
               About us
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to="/item"
-              className={({ isActive }) => (isActive ? styles.active : styles.menu_link)}
-            >
-              for 404
-            </NavLink>
-          </li>
         </ul>
       </nav>
     );
