@@ -1,5 +1,7 @@
 import React, { ChangeEvent, Component, MouseEvent, ReactNode } from 'react';
 
+import styles from './SearchBar.module.scss';
+
 const LS_KEY = 'dudarik_rss_react_searchString';
 
 class SearchBar extends Component {
@@ -31,16 +33,19 @@ class SearchBar extends Component {
 
   render(): ReactNode {
     return (
-      <form>
+      <form className={styles.search_form}>
         <input
           type="text"
           name="searchString"
           id="searchString"
-          placeholder="input serch string"
+          placeholder="input search string"
           onChange={this.handleChangeInput}
           value={this.state.searchString}
+          className={styles.search_input}
         />
-        <button onClick={this.handleSearchBtnClick}>Serach</button>
+        <button onClick={this.handleSearchBtnClick} className={styles.search_button}>
+          Serach
+        </button>
       </form>
     );
   }
