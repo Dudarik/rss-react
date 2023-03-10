@@ -1,7 +1,7 @@
 import React, { Component, ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import styles from './mainnav.module.scss';
+import styles from './MainNav.module.scss';
 
 class MainNav extends Component {
   render(): ReactNode {

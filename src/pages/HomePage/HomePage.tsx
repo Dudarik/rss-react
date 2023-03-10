@@ -2,7 +2,7 @@ import CardsList from '../../components/CardsList';
 import SearchBar from '../../components/SearchBar';
 import React, { Component } from 'react';
 
-import styles from './homepage.module.scss';
+import styles from './HomePage.module.scss';
 
 class HomePage extends Component {
   render() {

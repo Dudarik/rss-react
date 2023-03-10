@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import MainNav from '../MainNav';
 
-import styles from './header.module.scss';
+import styles from './Header.module.scss';
 
 class Header extends Component {
   render() {
