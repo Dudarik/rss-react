@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import MainNav from '../MainNav';
 
@@ -8,7 +9,9 @@ class Header extends Component {
   render() {
     return (
       <header className={styles.header}>
-        <h1 className={styles.logo}>RSS-React</h1>
+        <Link to="/">
+          <h1 className={styles.logo}>RSS-React</h1>
+        </Link>
         <MainNav />
       </header>
     );
