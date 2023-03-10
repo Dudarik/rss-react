@@ -28,9 +28,22 @@ class CardsList extends Component {
   render(): ReactNode {
     return (
       <ul className={styles.card_list}>
-        {this.state.games.map((gameCard) => (
-          <Card key={gameCard.id} {...gameCard} />
-        ))}
+        {this.state.games.map((gameCard) => {
+          const publisher = this.state.publishers.find(
+            (publisher) => publisher.id === gameCard.publisher
+          );
+          let publisherImage = '';
+          let publisherTitle = '';
+
+          if (publisher !== undefined) {
+            publisherImage = publisher.img;
+            publisherTitle = publisher.title;
+          }
+
+          const cardData = Object.assign(gameCard, { publisherImage, publisherTitle });
+
+          return <Card key={gameCard.id} {...cardData} />;
+        })}
       </ul>
     );
   }

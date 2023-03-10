@@ -5,13 +5,19 @@
 
   flex-direction: column;
 
-  gap: 1.5rem;
+  gap: 0.5rem;
 
   width: 20rem;
 
   background-color: white;
   transition: all 0.5s;
-  img {
+
+  position: relative;
+
+  .image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding-top: 1rem;
     // width: 200px;
     flex: 1;
