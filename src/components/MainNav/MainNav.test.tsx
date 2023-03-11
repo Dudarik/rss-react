@@ -2,7 +2,7 @@ import { describe, test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
-import MainNav from './MainNav';
+import MainNav from '.';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import styles from './MainNav.module.scss';

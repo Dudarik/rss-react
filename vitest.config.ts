@@ -7,5 +7,11 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './tests/setup.ts',
+    coverage: {
+      provider: 'c8',
+      all: true,
+      // skipFull: true,
+      reporter: 'text',
+    },
   },
 });
