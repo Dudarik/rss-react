@@ -10,6 +10,7 @@ class MainNav extends Component {
         <ul className={styles.menu}>
           <li>
             <NavLink
+              id="homelink"
               to="/"
               className={({ isActive }) => (isActive ? styles.active : styles.menu_link)}
             >
@@ -18,6 +19,7 @@ class MainNav extends Component {
           </li>
           <li>
             <NavLink
+              id="aboutlink"
               to="/about"
               className={({ isActive }) => (isActive ? styles.active : styles.menu_link)}
             >
