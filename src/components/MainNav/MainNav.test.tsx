@@ -9,9 +9,6 @@ import styles from './MainNav.module.scss';
 
 describe('<MainNav />', () => {
   test('MainNav mounts properly', () => {
-    // const root = document.createElement('div');
-    // document.body.appendChild(root);
-
     const wrapper = render(
       <MemoryRouter>
         <MainNav />
