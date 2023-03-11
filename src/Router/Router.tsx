@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
-
-import { HomePage, AboutPage, NotFoundPage } from '../pages';
+import { routes } from './Routes';
 
 class Router extends Component {
   render() {
     return (
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="*" element={<NotFoundPage />} />
+        {routes.map((route) => {
+          const { path, element } = route;
+          return <Route path={path} element={element} key={path}></Route>;
+        })}
       </Routes>
     );
   }
