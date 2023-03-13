@@ -1,14 +1,14 @@
 import { Component } from 'react';
 
 export interface IPageProps {
-  pageTitle: string;
+  pageTitle?: string;
 }
 
 class Page extends Component<IPageProps> {
   pageTitle: string;
   constructor(props: IPageProps) {
     super(props);
-    this.pageTitle = props.pageTitle;
+    this.pageTitle = props.pageTitle || 'untitled';
   }
   componentDidMount(): void {
     document.title = this.pageTitle;
