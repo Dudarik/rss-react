@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import Page from '../Page';
+import React from 'react';
 
-class AboutPage extends Component {
+class AboutPage extends Page {
   render() {
     return (
       <main className="main">

@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import Page from '../Page';
+import React from 'react';
 
-class NotFoundPage extends Component {
+class NotFoundPage extends Page {
   render() {
     return (
       <main className="main">

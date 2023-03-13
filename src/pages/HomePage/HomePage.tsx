@@ -1,10 +1,11 @@
 import CardsList from '../../components/CardsList';
 import SearchBar from '../../components/SearchBar';
-import React, { Component } from 'react';
+import React from 'react';
 
 import styles from './HomePage.module.scss';
+import Page from '../Page';
 
-class HomePage extends Component {
+class HomePage extends Page {
   render() {
     return (
       <main className={styles.main}>
