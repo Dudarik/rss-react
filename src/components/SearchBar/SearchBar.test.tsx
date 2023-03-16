@@ -30,8 +30,6 @@ describe('<SearchBar />', () => {
 
     const inputField = screen.getByPlaceholderText('input search string');
 
-    // await userEvent.type(inputField, inputString);
-
     expect(inputField).toHaveValue(inputString);
 
     const searchBtn = screen.getByTitle('search');

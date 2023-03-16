@@ -13,7 +13,6 @@ class SearchBar extends Component {
     event.preventDefault();
 
     console.log(this.state.searchString);
-    this.setState({ searchString: '' });
   };
 
   handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {

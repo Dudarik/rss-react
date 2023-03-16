@@ -15,14 +15,19 @@ interface ICardProps extends IGameData {
 }
 
 class Card extends Component<ICardProps> {
-  constructor(props: ICardProps) {
-    super(props);
-  }
-  componentDidMount(): void {}
   render(): ReactNode {
-    // console.log(this.props);
-    const { id, title, players, age, playingTime, lang, image, publisherImage, publisherTitle } =
-      this.props;
+    const {
+      id,
+      title,
+      players,
+      age,
+      playingTime,
+      lang,
+      image,
+      game,
+      publisherImage,
+      publisherTitle,
+    } = this.props;
 
     const infoData = [
       {
@@ -55,6 +60,7 @@ class Card extends Component<ICardProps> {
         <Link to={`products/${id}`} className={styles.card_title}>
           {title}
         </Link>
+        <div>{game ? 'Игра' : 'Дполнение к игре'}</div>
 
         <div className={styles.publisher}>
           <img src={PATH_TO_PUBLISHER_IMG + publisherImage} alt={publisherTitle} />

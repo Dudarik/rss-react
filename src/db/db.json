@@ -118,22 +118,21 @@
       },
       {
           "id":5,
-          "title":"Диамант",
-          "publisher":0,
-          "players":"2 - 4",
-          "playingTime":"60 - 90",
-          "age":12,
-          "rulesTime":15,
+          "title":"Повелитель Токио: Хэллоуин",
+          "publisher":1,
+          "players":"2 - 6",
+          "playingTime":"25 - 40",
+          "age":8,
+          "rulesTime":5,
           "lang":"Русский",
           "tags":[
-              "приключения",
-              "подземелье",
-              "колодострой"
+              "мочилово",
+              "кубики"
           ],
-          "scoreBGG":7,
-          "scoreTesera":7,
-          "image":"clank.webp",
-          "game":true
+          "scoreBGG":7.22,
+          "scoreTesera":6.6,
+          "image":"tokio_hello.webp",
+          "game":false
       },
       {
           "id":6,
