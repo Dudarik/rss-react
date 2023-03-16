@@ -4,11 +4,19 @@ import Footer from './components/Footer';
 import Router from './Router';
 
 class App extends Component {
+  state = {
+    currentPageTitle: '',
+  };
+
+  setCurrentPageTitle = (newTitle: string) => {
+    this.setState({ currentPageTitle: newTitle });
+  };
+
   render() {
     return (
       <>
-        <Header />
-        <Router />
+        <Header pageTitle={this.state.currentPageTitle} />
+        <Router setCurrentPageTitle={this.setCurrentPageTitle} />
         <Footer />
       </>
     );

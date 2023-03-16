@@ -7,7 +7,9 @@ class AboutPage extends Page {
   render() {
     return (
       <main className={styles.main}>
-        <h1>This is an ABOUT page</h1>
+        <h2>
+          This is an <span className="pageTitle">{this.pageTitle}</span> page
+        </h2>
       </main>
     );
   }
