@@ -8,12 +8,12 @@ describe('<HomePage />', () => {
   test('HomePage mounts properly', () => {
     const wrapper = render(
       <MemoryRouter>
-        <HomePage />
+        <HomePage pageTitle="Home" />
       </MemoryRouter>
     );
     expect(wrapper).toBeTruthy();
 
-    const text = screen.getByText(/HOME page/i);
+    const text = screen.getByText(/Home/i);
     expect(text.textContent).toBeTruthy();
   });
 });
