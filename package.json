@@ -11,7 +11,8 @@
     "coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "deploy": "npm run build && npx gh-pages -d dist -e ."
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -36,6 +37,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "gh-pages": "^5.0.0",
     "husky": "^7.0.4",
     "jsdom": "^21.1.0",
     "lint-staged": "^12.5.0",

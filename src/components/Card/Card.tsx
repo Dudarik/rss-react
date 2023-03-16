@@ -24,7 +24,7 @@ class Card extends Component<ICardProps> {
       playingTime,
       lang,
       image,
-      game,
+      game: isGame,
       publisherImage,
       publisherTitle,
     } = this.props;
@@ -60,7 +60,7 @@ class Card extends Component<ICardProps> {
         <Link to={`products/${id}`} className={styles.card_title}>
           {title}
         </Link>
-        <div>{game ? 'Игра' : 'Дполнение к игре'}</div>
+        <div>{isGame ? 'Игра' : 'Дполнение к игре'}</div>
 
         <div className={styles.publisher}>
           <img src={PATH_TO_PUBLISHER_IMG + publisherImage} alt={publisherTitle} />
