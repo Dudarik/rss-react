@@ -9,7 +9,8 @@ class Page extends Component<IPageProps> {
   pageTitle: string;
   constructor(props: IPageProps) {
     super(props);
-    this.pageTitle = this.props.pageTitle || 'untitled';
+    const { pageTitle } = this.props;
+    this.pageTitle = pageTitle || 'untitled';
   }
   componentDidMount(): void {
     const { setCurrentPageTitle } = this.props;

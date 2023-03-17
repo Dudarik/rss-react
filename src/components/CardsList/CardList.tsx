@@ -15,15 +15,11 @@ class CardsList extends Component {
   };
 
   componentDidMount() {
-    try {
-      const cardsData = getGamesData();
+    const cardsData = getGamesData();
 
-      if (cardsData === undefined) throw new Error(`Can't load data from DB`);
+    if (cardsData === undefined) throw new Error(`Can't load data from DB`);
 
-      this.setState(cardsData);
-    } catch (error) {
-      console.log(error);
-    }
+    this.setState(cardsData);
   }
   render(): ReactNode {
     return (

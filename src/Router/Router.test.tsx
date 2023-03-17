@@ -10,7 +10,7 @@ describe('<Router />', () => {
   test('Router mounts properly', async () => {
     const wrapper = render(
       <MemoryRouter>
-        <Router setCurrentPageTitle={() => {}} />
+        <Router />
       </MemoryRouter>
     );
 

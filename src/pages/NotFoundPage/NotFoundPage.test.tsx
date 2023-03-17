@@ -16,4 +16,16 @@ describe('<NotFoundPage />', () => {
     const text = screen.getByText(/Not found/i);
     expect(text.textContent).toBeTruthy();
   });
+
+  test('NotFoundPage mounts properly without title', () => {
+    const wrapper = render(
+      <MemoryRouter>
+        <NotFoundPage />
+      </MemoryRouter>
+    );
+    expect(wrapper).toBeTruthy();
+
+    const text = screen.getByText(/untitled/i);
+    expect(text.textContent).toBeTruthy();
+  });
 });
