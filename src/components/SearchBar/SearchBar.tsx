@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Component, MouseEvent, ReactNode } from 'react';
+import React, { ChangeEvent, Component, ReactNode } from 'react';
 
 import styles from './SearchBar.module.scss';
 
