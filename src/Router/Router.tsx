@@ -9,24 +9,20 @@ interface IRouterProps {
 
 class Router extends Component<IRouterProps> {
   render() {
+    const { setCurrentPageTitle } = this.props;
     const routes = [
       {
         path: '/',
-        element: <HomePage pageTitle="Home" setCurrentPageTitle={this.props.setCurrentPageTitle} />,
+        element: <HomePage pageTitle="Home" setCurrentPageTitle={setCurrentPageTitle} />,
       },
       {
         path: '/about',
-        element: (
-          <AboutPage pageTitle="About" setCurrentPageTitle={this.props.setCurrentPageTitle} />
-        ),
+        element: <AboutPage pageTitle="About" setCurrentPageTitle={setCurrentPageTitle} />,
       },
       {
         path: '*',
         element: (
-          <NotFoundPage
-            pageTitle="Not Found(404)"
-            setCurrentPageTitle={this.props.setCurrentPageTitle}
-          />
+          <NotFoundPage pageTitle="Not Found(404)" setCurrentPageTitle={setCurrentPageTitle} />
         ),
       },
     ];
