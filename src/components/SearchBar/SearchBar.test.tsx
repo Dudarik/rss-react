@@ -22,20 +22,4 @@ describe('<SearchBar />', () => {
 
     expect(inputField).toHaveValue(inputString);
   });
-
-  test('SearchBar handler onclick', async () => {
-    render(<SearchBar />);
-
-    const inputString = 'Hello world';
-
-    const inputField = screen.getByPlaceholderText('input search string');
-
-    expect(inputField).toHaveValue(inputString);
-
-    const searchBtn = screen.getByTitle('search');
-
-    await userEvent.click(searchBtn);
-
-    expect(inputField).toHaveValue('');
-  });
 });

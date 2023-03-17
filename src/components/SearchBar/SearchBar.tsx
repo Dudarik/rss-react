@@ -9,12 +9,6 @@ class SearchBar extends Component {
     searchString: '',
   };
 
-  handleSearchBtnClick = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    console.log(this.state.searchString);
-  };
-
   handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target;
 
@@ -43,7 +37,7 @@ class SearchBar extends Component {
           value={this.state.searchString}
           className={styles.search_input}
         />
-        <button onClick={this.handleSearchBtnClick} className={styles.search_button} title="search">
+        <button className={styles.search_button} title="search">
           Search
         </button>
       </form>
