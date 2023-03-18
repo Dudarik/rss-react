@@ -22,7 +22,7 @@ class SearchBar extends Component {
   };
 
   componentWillUnmount = () => {
-    if (this.state.searchString.length > 0) localStorage.setItem(LS_KEY, this.state.searchString);
+    localStorage.setItem(LS_KEY, this.state.searchString);
   };
 
   render(): ReactNode {
