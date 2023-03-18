@@ -12,9 +12,7 @@ export interface IGameData {
   players: string;
   playingTime: string;
   age: number;
-  rulesTime: number;
   lang: string;
-  tags: string[];
   scoreBGG: number;
   scoreTesera: number;
   image: string;
