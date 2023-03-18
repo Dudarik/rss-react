@@ -30,14 +30,7 @@
           "players":"1 - 5",
           "playingTime":"60 - 90",
           "age":12,
-          "rulesTime":15,
           "lang":"Русский",
-          "tags":[
-              "воркплейсмент",
-              "евро",
-              "еврогейм",
-              "миплплейсмент"
-          ],
           "scoreBGG":7.77,
           "scoreTesera":7.77,
           "image":"architech.webp",
@@ -51,13 +44,7 @@
           "players":"1 - 4",
           "playingTime":"60 - 90",
           "age":13,
-          "rulesTime":20,
           "lang":"Русский",
-          "tags":[
-              "гонки",
-              "постапокалипсис",
-              "север"
-          ],
           "scoreBGG":7.36,
           "scoreTesera":6.67,
           "image":"aurora.webp",
@@ -71,11 +58,7 @@
           "players":"2 - 4",
           "playingTime":"60 - 120",
           "age":14,
-          "rulesTime":0,
           "lang":"Русский",
-          "tags":[
-              "постапокалипсис"
-          ],
           "scoreBGG":7.8,
           "scoreTesera":7,
           "image":"badlands.webp",
@@ -89,13 +72,7 @@
           "players":"2 - 4",
           "playingTime":"60 - 90",
           "age":12,
-          "rulesTime":15,
           "lang":"Русский",
-          "tags":[
-              "приключения",
-              "подземелье",
-              "колодострой"
-          ],
           "scoreBGG":7,
           "scoreTesera":7,
           "image":"clank.webp",
@@ -109,13 +86,7 @@
           "players":"2 - 4",
           "playingTime":"60 - 90",
           "age":12,
-          "rulesTime":15,
           "lang":"Русский",
-          "tags":[
-              "приключения",
-              "подземелье",
-              "колодострой"
-          ],
           "scoreBGG":7,
           "scoreTesera":7,
           "image":"diamant.webp",
@@ -129,12 +100,7 @@
           "players":"2 - 6",
           "playingTime":"25 - 40",
           "age":8,
-          "rulesTime":5,
           "lang":"Русский",
-          "tags":[
-              "мочилово",
-              "кубики"
-          ],
           "scoreBGG":7.22,
           "scoreTesera":6.6,
           "image":"tokio_hello.webp",
@@ -148,13 +114,7 @@
           "players":"1 - 4",
           "playingTime":"60 - 120",
           "age":13,
-          "rulesTime":25,
           "lang":"Русский",
-          "tags":[
-              "стратегия",
-              "фантастика",
-              "дюна"
-          ],
           "scoreBGG":8.38,
           "scoreTesera":7.3,
           "image":"dune_imp.webp",
@@ -168,13 +128,7 @@
           "players":"1 - 4",
           "playingTime":"60 - 120",
           "age":13,
-          "rulesTime":15,
           "lang":"Русский",
-          "tags":[
-              "стратегия",
-              "фантастика",
-              "дюна"
-          ],
           "scoreBGG":8.38,
           "scoreTesera":7.3,
           "image":"dune_iks.webp",
@@ -188,11 +142,7 @@
           "players":"1 - 4",
           "playingTime":"60 - 120",
           "age":13,
-          "rulesTime":20,
           "lang":"Русский",
-          "tags":[
-              "кооператив"
-          ],
           "scoreBGG":8.36,
           "scoreTesera":7.6,
           "image":"gods.webp",
@@ -206,13 +156,7 @@
           "players":"2 - 4",
           "playingTime":"60 - 90",
           "age":12,
-          "rulesTime":15,
           "lang":"Русский",
-          "tags":[
-              "стратегия",
-              "миплплейсмент",
-              "ареаконтроль"
-          ],
           "scoreBGG":7.82,
           "scoreTesera":8.75,
           "image":"inis.webp",
@@ -226,13 +170,7 @@
           "players":"2 - 5",
           "playingTime":"90 - 120",
           "age":12,
-          "rulesTime":15,
           "lang":"Русский",
-          "tags":[
-              "стратегия",
-              "миплплейсмент",
-              "ареаконтроль"
-          ],
           "scoreBGG":8.3,
           "scoreTesera":7.4,
           "image":"inis_seasons.webp",
@@ -246,14 +184,7 @@
           "players":"2 - 4",
           "playingTime":"45 - 90",
           "age":10,
-          "rulesTime":10,
           "lang":"Русский",
-          "tags":[
-              "стратегия",
-              "красивая",
-              "картины",
-              "семейная"
-          ],
           "scoreBGG":7.05,
           "scoreTesera":7.52,
           "image":"kanagava.webp",
@@ -267,12 +198,7 @@
           "players":"1 - 4",
           "playingTime":"45 - 60",
           "age":14,
-          "rulesTime":20,
           "lang":"Русский",
-          "tags":[
-              "стратегия",
-              "семейная"
-          ],
           "scoreBGG":7.6,
           "scoreTesera":7.5,
           "image":"mars_ares.webp",
@@ -286,12 +212,7 @@
           "players":"1 - 5",
           "playingTime":"90 - 120",
           "age":12,
-          "rulesTime":20,
           "lang":"Русский",
-          "tags":[
-              "стратегия",
-              "семейная"
-          ],
           "scoreBGG":8.39,
           "scoreTesera":8.19,
           "image":"mars.webp",
@@ -305,14 +226,7 @@
           "players":"2 - 5",
           "playingTime":"60 - 120",
           "age":10,
-          "rulesTime":15,
           "lang":"Русский",
-          "tags":[
-              "стратегия",
-              "кубики",
-              "миплплейсмент",
-              "семейная"
-          ],
           "scoreBGG":7.9,
           "scoreTesera":8.2,
           "image":"midgard_champions_valhala.webp",
@@ -326,15 +240,7 @@
           "players":"2 - 4",
           "playingTime":"60 - 90",
           "age":10,
-          "rulesTime":20,
           "lang":"Русский",
-          "tags":[
-              "стратегия",
-              "кубики",
-              "миплплейсмент",
-              "семейная",
-              "викинги"
-          ],
           "scoreBGG":7.7,
           "scoreTesera":7.5,
           "image":"midgard_champions.webp",
@@ -348,12 +254,7 @@
           "players":"1 - 4",
           "playingTime":"90 - 120",
           "age":12,
-          "rulesTime":20,
           "lang":"Русский",
-          "tags":[
-              "стратегия",
-              "хардкор"
-          ],
           "scoreBGG":7.89,
           "scoreTesera":7.5,
           "image":"teotiukan.webp",
@@ -367,14 +268,7 @@
           "players":"2 - 4",
           "playingTime":"90 - 180",
           "age":13,
-          "rulesTime":30,
           "lang":"Русский",
-          "tags":[
-              "стратегия",
-              "миплплейсмент",
-              "необычное поле",
-              "хардкор"
-          ],
           "scoreBGG":7.88,
           "scoreTesera":7.4,
           "image":"tzolkin.webp",
