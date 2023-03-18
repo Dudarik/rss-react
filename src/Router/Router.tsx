@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { HomePage, AboutPage, NotFoundPage } from '../pages';
 
@@ -20,10 +20,14 @@ class Router extends Component<IRouterProps> {
         element: <AboutPage pageTitle="About" setCurrentPageTitle={setCurrentPageTitle} />,
       },
       {
-        path: '*',
+        path: '/404',
         element: (
           <NotFoundPage pageTitle="Not Found(404)" setCurrentPageTitle={setCurrentPageTitle} />
         ),
+      },
+      {
+        path: '*',
+        element: <Navigate to="/404" replace />,
       },
     ];
 
