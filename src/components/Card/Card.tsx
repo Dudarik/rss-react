@@ -19,7 +19,10 @@ class Card extends Component<ICardProps> {
     const {
       id,
       title,
+      releaseDate,
       players,
+      scoreBGG,
+      scoreTesera,
       age,
       playingTime,
       lang,
@@ -50,6 +53,11 @@ class Card extends Component<ICardProps> {
         title: 'Язык:',
         title_info: lang,
       },
+      {
+        icon: 'fa-solid fa-calendar-days',
+        title: 'Дата релиза:',
+        title_info: releaseDate,
+      },
     ];
 
     return (
@@ -61,6 +69,11 @@ class Card extends Component<ICardProps> {
           {title}
         </Link>
         <div>{isGame ? 'Игра' : 'Дполнение к игре'}</div>
+
+        <div className={styles.rating}>
+          BGG :<span>{scoreBGG}</span>
+          <pre> | </pre>Tesera <span>{scoreTesera}</span>
+        </div>
 
         <div className={styles.publisher}>
           <img src={PATH_TO_PUBLISHER_IMG + publisherImage} alt={publisherTitle} />

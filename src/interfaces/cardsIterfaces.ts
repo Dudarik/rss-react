@@ -7,6 +7,7 @@ export interface IPublisher {
 export interface IGameData {
   id: number;
   title: string;
+  releaseDate: string;
   publisher: number;
   players: string;
   playingTime: string;

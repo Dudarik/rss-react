@@ -9,6 +9,7 @@ import Card from '.';
 const cardData = {
   id: 0,
   title: 'Архитекторы западного королевства',
+  releaseDate: '25.12.2015',
   publisher: 0,
   players: '1 - 5',
   playingTime: '60 - 90',
