@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { HomePage, AboutPage, NotFoundPage } from '../pages';
+import { HomePage, AboutPage, FormPage, NotFoundPage } from '../pages';
 
 interface IRouterProps {
   setCurrentPageTitle?: (newTitle: string) => void;
@@ -18,6 +18,10 @@ class Router extends Component<IRouterProps> {
       {
         path: '/about',
         element: <AboutPage pageTitle="About" setCurrentPageTitle={setCurrentPageTitle} />,
+      },
+      {
+        path: '/form',
+        element: <FormPage pageTitle="Form" setCurrentPageTitle={setCurrentPageTitle} />,
       },
       {
         path: '/404',

@@ -12,6 +12,7 @@ class MainNav extends Component {
     const isActiveLink = (link: IMenuLink) => (link.isActive ? styles.active : styles.menu_link);
     const links = [
       { path: '/', title: 'Home' },
+      { path: '/form', title: 'Form' },
       { path: '/about', title: 'About us' },
     ];
 
