@@ -29,7 +29,7 @@ class SearchBar extends Component {
     return (
       <form className={styles.search_form}>
         <input
-          type="text"
+          type="search"
           name="searchString"
           id="searchString"
           placeholder="input search string"
