@@ -1,3 +1,4 @@
+import CustomSelect from '../../components/CustomSelect';
 import React, { FormEvent, Component, ReactNode } from 'react';
 
 import styles from './FormAddCard.module.scss';
@@ -51,6 +52,14 @@ class FromAddCard extends Component {
 
         <input type="checkbox" name="is_game" id="is_game" />
         <button type="submit">submit</button>
+        <CustomSelect values={[1, 2, 3, 4]} />
+        {/* <CustomSelect values={['1', '2', '3', '4']} /> */}
+        {/* <CustomSelect values={[true, false, true, false]} /> */}
+
+        <CustomSelect
+          {...{ values: [{ 1: '1aaa' }, { 2: '2sss' }, { 3: '3ddd' }, { 4: '4ff' }] }}
+        />
+        {/* <CustomSelect {...{ values: [{ '1': '1' }, { '2': '2' }, { '3': '3' }, { '4': '4' }] }} /> */}
       </form>
     );
   }
