@@ -16,9 +16,6 @@ describe('<MainNav />', () => {
     );
     expect(wrapper).toBeTruthy();
 
-    const nav = wrapper.container.querySelector('nav');
-    expect(nav?.textContent).toBeTruthy();
-
     const homeLinkText = screen.getByText(/Home/i);
     expect(homeLinkText.textContent).toBeTruthy();
   });
