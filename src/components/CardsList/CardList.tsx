@@ -1,5 +1,3 @@
-import { getGamesData } from '../../helpers';
-
 import { IGamesData } from '../../interfaces/cardsIterfaces';
 
 import React, { Component, ReactNode } from 'react';
@@ -8,18 +6,14 @@ import Card from '../Card';
 
 import styles from './CardList.module.scss';
 
-class CardsList extends Component {
+class CardsList extends Component<IGamesData> {
   state: IGamesData = {
     publishers: [],
     games: [],
   };
 
   componentDidMount() {
-    const cardsData = getGamesData();
-
-    if (cardsData === undefined) throw new Error(`Can't load data from DB`);
-
-    this.setState(cardsData);
+    this.setState(this.props);
   }
   render(): ReactNode {
     return (
