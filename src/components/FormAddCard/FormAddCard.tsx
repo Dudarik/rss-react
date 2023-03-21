@@ -1,68 +1,78 @@
 import CustomSelect from '../../components/CustomSelect';
-import React, { FormEvent, Component, ReactNode } from 'react';
+import React, { FormEvent, Component, ReactNode, ChangeEvent } from 'react';
 
 import styles from './FormAddCard.module.scss';
+import { getGamesData } from '../../helpers';
+import { IPublisher } from 'interfaces/cardsIterfaces';
 
-class FromAddCard extends Component {
+const publishers = {
+  values: getGamesData('publishers') as IPublisher[],
+  id: 'select_publishers',
+  title: 'Выбери издателя',
+};
+const min_players = { values: [1, 2, 3, 4], id: 'select_min_players', title: 'Мин. игроков' };
+const max_players = {
+  values: [2, 3, 4, 5, 6, 7, 8],
+  id: 'select_max_players',
+  title: 'Макс. игроков',
+};
+const age = { values: [6, 7, 8, 10, 12, 14, 16, 18], id: 'select_age', title: 'Мин. возраст' };
+
+class FormAddCard extends Component {
   handleSubmitForm = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log('submit form');
   };
   render(): ReactNode {
     return (
       <form onSubmit={this.handleSubmitForm} className={styles.add_card_form}>
-        <input type="file" name="game_picture" id="game_picture" />
-        <input type="text" name="game_title" id="game_title" />
-        <input type="text" name="bgg_rating" id="bgg_rating" />
-        <input type="text" name="tesera_rating" id="tesera_rating" />
-        <select name="publisher" id="publisher">
-          <option value="1">lavka</option>
-        </select>
-        <select name="min_players" id="min_players">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-        </select>
-        <select name="max_players" id="max_players">
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-        </select>
+        <label htmlFor="game_picture">
+          Добавь картинку игры
+          <input type="file" name="game_picture" id="game_picture" />
+        </label>
+        <label htmlFor="game_title">
+          Добавь название игры
+          <input type="text" name="game_title" id="game_title" />
+        </label>
+        <label htmlFor="bgg_rating">
+          BGG рейтинг
+          <input type="number" name="bgg_rating" id="bgg_rating" />
+        </label>
+        <label htmlFor="bgg_rating">
+          Рейтинг на тесере
+          <input type="number" name="tesera_rating" id="tesera_rating" />
+        </label>
 
-        <select name="age" id="age">
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="10">10</option>
-          <option value="12">12</option>
-          <option value="14">14</option>
-          <option value="16">16</option>
-          <option value="18">18</option>
-        </select>
+        <CustomSelect {...publishers} />
+        <CustomSelect {...min_players} />
+        <CustomSelect {...max_players} />
+        <CustomSelect {...age} />
 
-        <input type="radio" name="lang" id="russian" value="Русский" defaultChecked={true} />
-        <input type="radio" name="lang" id="english" value="Английский" />
-        <input type="radio" name="lang" id="french" value="Французский" />
+        <fieldset
+          id="lang"
+          onClick={(e: ChangeEvent<HTMLFieldSetElement>) => console.log(e.target.value)}
+        >
+          <label htmlFor="rus">Русский</label>
+          <input type="radio" name="lang" id="rus" value="Русский" defaultChecked={true} />
+          <label htmlFor="eng">Английский</label>
+          <input type="radio" name="lang" id="eng" value="Английский" />
+          <label htmlFor="french">Французский</label>
+          <input type="radio" name="lang" id="french" value="Французский" />
+        </fieldset>
 
-        <input type="date" name="release_date" id="release_date" />
+        <label htmlFor="release_date">
+          Дата релиза:
+          <input type="date" name="release_date" id="release_date" />
+        </label>
 
-        <input type="checkbox" name="is_game" id="is_game" />
+        <label htmlFor="is_game">
+          Вкл(игра)/ Выкл(дополнение к игре)
+          <input type="checkbox" name="is_game" id="is_game" />
+        </label>
         <button type="submit">submit</button>
-        <CustomSelect values={[1, 2, 3, 4]} />
-        {/* <CustomSelect values={['1', '2', '3', '4']} /> */}
-        {/* <CustomSelect values={[true, false, true, false]} /> */}
-
-        <CustomSelect
-          {...{ values: [{ 1: '1aaa' }, { 2: '2sss' }, { 3: '3ddd' }, { 4: '4ff' }] }}
-        />
-        {/* <CustomSelect {...{ values: [{ '1': '1' }, { '2': '2' }, { '3': '3' }, { '4': '4' }] }} /> */}
       </form>
     );
   }
 }
 
-export default FromAddCard;
+export default FormAddCard;
