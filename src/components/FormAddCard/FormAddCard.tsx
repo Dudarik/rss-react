@@ -1,70 +1,86 @@
-import CustomSelect from '../../components/CustomSelect';
-import React, { FormEvent, Component, ReactNode, ChangeEvent } from 'react';
+import CustomSelect from '../CustomSelect';
+import React, { FormEvent, Component, ReactNode, createRef, RefObject } from 'react';
 
 import styles from './FormAddCard.module.scss';
-import { getGamesData } from '../../helpers';
-import { IPublisher } from 'interfaces/cardsIterfaces';
+import {
+  defaultFields,
+  publishers,
+  min_players,
+  max_players,
+  age,
+  langs,
+} from './FormAddCardDefaultValues';
 
-const publishers = {
-  values: getGamesData('publishers') as IPublisher[],
-  id: 'select_publishers',
-  title: 'Выбери издателя',
-};
-const min_players = { values: [1, 2, 3, 4], id: 'select_min_players', title: 'Мин. игроков' };
-const max_players = {
-  values: [2, 3, 4, 5, 6, 7, 8],
-  id: 'select_max_players',
-  title: 'Макс. игроков',
-};
-const age = { values: [6, 7, 8, 10, 12, 14, 16, 18], id: 'select_age', title: 'Мин. возраст' };
+type TInputRef = { ref: RefObject<HTMLInputElement> };
 
 class FormAddCard extends Component {
+  langs: ({ langId: string; value: string } & TInputRef)[];
+
+  refPublishers: RefObject<HTMLSelectElement>;
+  refMinPlayers: RefObject<HTMLSelectElement>;
+  refMaxPlayers: RefObject<HTMLSelectElement>;
+  refAge: RefObject<HTMLSelectElement>;
+
+  constructor(props = {}) {
+    super(props);
+    this.langs = this.createInputRefs(langs);
+    this.refPublishers = createRef<HTMLSelectElement>();
+    this.refMinPlayers = createRef<HTMLSelectElement>();
+    this.refMaxPlayers = createRef<HTMLSelectElement>();
+    this.refAge = createRef<HTMLSelectElement>();
+  }
+  createInputRefs<T>(arrOfObj: T[]): (T & TInputRef)[] {
+    return arrOfObj.map((obj) => Object.assign({}, obj, { ref: createRef<HTMLInputElement>() }));
+  }
+
   handleSubmitForm = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('submit form');
+
+    for (let i = 0; i < langs.length; i++) {
+      console.log(this.langs[i].ref.current?.checked);
+    }
+    console.log(this.refPublishers.current?.value);
   };
+
   render(): ReactNode {
     return (
       <form onSubmit={this.handleSubmitForm} className={styles.add_card_form}>
-        <label htmlFor="game_picture">
-          Добавь картинку игры
-          <input type="file" name="game_picture" id="game_picture" />
-        </label>
-        <label htmlFor="game_title">
-          Добавь название игры
-          <input type="text" name="game_title" id="game_title" />
-        </label>
-        <label htmlFor="bgg_rating">
-          BGG рейтинг
-          <input type="number" name="bgg_rating" id="bgg_rating" />
-        </label>
-        <label htmlFor="bgg_rating">
-          Рейтинг на тесере
-          <input type="number" name="tesera_rating" id="tesera_rating" />
-        </label>
-
-        <CustomSelect {...publishers} />
-        <CustomSelect {...min_players} />
-        <CustomSelect {...max_players} />
-        <CustomSelect {...age} />
-
-        <fieldset
-          id="lang"
-          onClick={(e: ChangeEvent<HTMLFieldSetElement>) => console.log(e.target.value)}
-        >
-          <label htmlFor="rus">Русский</label>
-          <input type="radio" name="lang" id="rus" value="Русский" defaultChecked={true} />
-          <label htmlFor="eng">Английский</label>
-          <input type="radio" name="lang" id="eng" value="Английский" />
-          <label htmlFor="french">Французский</label>
-          <input type="radio" name="lang" id="french" value="Французский" />
+        {defaultFields.map((field) => {
+          const { fieldNameId, fieldTitle, fieldType } = field;
+          return (
+            <label htmlFor={fieldNameId} key={fieldNameId}>
+              {fieldTitle}
+              <input type={fieldType} id={fieldNameId} name={fieldNameId} />
+            </label>
+          );
+        })}
+        <CustomSelect {...publishers} refSelect={this.refPublishers} />
+        <CustomSelect {...min_players} refSelect={this.refMinPlayers} />
+        <CustomSelect {...max_players} refSelect={this.refMinPlayers} />
+        <CustomSelect {...age} refSelect={this.refMinPlayers} />
+        <fieldset id="lang">
+          <legend>Language</legend>
+          {this.langs.map((lang, index) => {
+            const { langId, value, ref } = lang;
+            return (
+              <label htmlFor={langId} key={langId}>
+                {value}
+                <input
+                  type="radio"
+                  name="lang"
+                  id={langId}
+                  value={value}
+                  ref={ref}
+                  defaultChecked={index === 0}
+                />
+              </label>
+            );
+          })}
         </fieldset>
-
         <label htmlFor="release_date">
           Дата релиза:
           <input type="date" name="release_date" id="release_date" />
         </label>
-
         <label htmlFor="is_game">
           Вкл(игра)/ Выкл(дополнение к игре)
           <input type="checkbox" name="is_game" id="is_game" />

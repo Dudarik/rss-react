@@ -1,20 +1,22 @@
-import { IPublisher } from 'interfaces/cardsIterfaces';
-import React, { ReactNode, Component } from 'react';
+import { IPublisher } from '../../interfaces/cardsIterfaces';
+import React, { ReactNode, Component, RefObject } from 'react';
 
 interface CustomSelectProps {
   values: number[] | IPublisher[];
   id: string;
-  title?: string;
+  title: string;
+  refSelect: RefObject<HTMLSelectElement>;
 }
 
 class CustomSelect extends Component<CustomSelectProps> {
   render(): ReactNode {
-    const { values, id, title } = this.props;
+    const { values, id, title, refSelect } = this.props;
 
     return (
-      <label htmlFor={id}>
-        {title}
-        <select id={id}>
+      <>
+        <label htmlFor={id}>{title}</label>
+
+        <select id={id} ref={refSelect}>
           {values.map((value) => {
             if (typeof value === 'number')
               return (
@@ -31,7 +33,7 @@ class CustomSelect extends Component<CustomSelectProps> {
             }
           })}
         </select>
-      </label>
+      </>
     );
   }
 }
