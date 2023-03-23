@@ -8,49 +8,61 @@ const FILD_TYPE_NUMBER = 'number';
 export const defaultFields = [
   {
     fieldNameId: 'game_picture',
-    fieldTitle: 'Добавь картинку игры',
+    fieldTitle: 'Add picture',
     fieldType: FILD_TYPE_FILE,
   },
   {
     fieldNameId: 'game_title',
-    fieldTitle: 'Добавь название игры',
+    fieldTitle: 'Add game title',
+    fieldType: FILD_TYPE_TEXT,
+  },
+  {
+    fieldNameId: 'game_duration',
+    fieldTitle: 'Add game duration (example: 60-90)',
     fieldType: FILD_TYPE_TEXT,
   },
   {
     fieldNameId: 'bgg_rating',
-    fieldTitle: 'BGG рейтинг',
+    fieldTitle: 'BGG rating',
     fieldType: FILD_TYPE_NUMBER,
   },
   {
     fieldNameId: 'tesera_rating',
-    fieldTitle: 'Рейтинг на Тесере',
+    fieldTitle: 'Tesera rating',
     fieldType: FILD_TYPE_NUMBER,
   },
 ];
 
-export const publishers = {
+const publishers = {
   values: getGamesData('publishers') as IPublisher[],
   id: 'select_publishers',
-  title: 'Выбери издателя',
+  title: 'Choose publisher',
 };
-export const min_players = {
+const min_players = {
   values: [1, 2, 3, 4],
   id: 'select_min_players',
-  title: 'Мин. игроков',
+  title: 'Min gamers',
 };
-export const max_players = {
+const max_players = {
   values: [2, 3, 4, 5, 6, 7, 8],
   id: 'select_max_players',
-  title: 'Макс. игроков',
+  title: 'Max gamers',
 };
-export const age = {
+const age = {
   values: [6, 7, 8, 10, 12, 14, 16, 18],
   id: 'select_age',
-  title: 'Мин. возраст',
+  title: 'Min age',
 };
 
+export const selectsData = [publishers, min_players, max_players, age];
+
 export const langs = [
-  { langId: 'rus', value: 'Русский' },
-  { langId: 'eng', value: 'Английский' },
-  { langId: 'fre', value: 'Французский' },
+  { id: 'rus', value: 'Русский' },
+  { id: 'eng', value: 'English' },
+  { id: 'fre', value: 'Le français' },
+];
+
+export const isGame = [
+  { id: 'game', value: 'Game' },
+  { id: 'addition', value: 'Addition' },
 ];

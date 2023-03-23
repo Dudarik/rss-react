@@ -5,18 +5,18 @@ interface CustomSelectProps {
   values: number[] | IPublisher[];
   id: string;
   title: string;
-  refSelect: RefObject<HTMLSelectElement>;
+  refProp: RefObject<HTMLSelectElement>;
 }
 
 class CustomSelect extends Component<CustomSelectProps> {
   render(): ReactNode {
-    const { values, id, title, refSelect } = this.props;
+    const { values, id, title, refProp } = this.props;
 
     return (
       <>
         <label htmlFor={id}>{title}</label>
 
-        <select id={id} ref={refSelect}>
+        <select id={id} ref={refProp}>
           {values.map((value) => {
             if (typeof value === 'number')
               return (
