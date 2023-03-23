@@ -9,19 +9,12 @@ class CustomRadioBox extends Component<IRadioBox> {
     return (
       <fieldset className={styles.radioFieldset}>
         <legend>{title}</legend>
-        {dataArr.map((item, index) => {
+        {dataArr.map((item) => {
           const { id, value, refProp } = item;
 
           return (
             <label htmlFor={id} key={id}>
-              <input
-                type="radio"
-                name={name}
-                id={id}
-                value={value}
-                ref={refProp}
-                defaultChecked={index === 0}
-              />
+              <input type="radio" name={name} id={id} value={value} ref={refProp} />
               {value}
             </label>
           );

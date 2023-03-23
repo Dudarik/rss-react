@@ -17,6 +17,9 @@ class CustomSelect extends Component<CustomSelectProps> {
         <label htmlFor={id}>{title}</label>
 
         <select id={id} ref={refProp}>
+          <option value="-1" disabled selected>
+            select the option
+          </option>
           {values.map((value) => {
             if (typeof value === 'number')
               return (
