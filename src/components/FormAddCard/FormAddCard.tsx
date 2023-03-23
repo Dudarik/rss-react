@@ -2,7 +2,13 @@ import CustomSelect from '../CustomSelect';
 import React, { FormEvent, Component, ReactNode, createRef, RefObject } from 'react';
 
 import styles from './FormAddCard.module.scss';
-import { defaultFields, selectsData, langs, isGame } from './FormAddCardDefaultValues';
+import {
+  defaultFields,
+  selectsData,
+  langs,
+  isGame,
+  FILD_TYPE_FILE,
+} from './FormAddCardDefaultValues';
 import {
   IInputText,
   IInputTextWithRef,
@@ -12,7 +18,8 @@ import {
   ISelectWithRef,
 } from '../../interfaces/formInterfaces';
 import CustomRadioBox from '../CustomRadioBox';
-import { IGameData } from 'interfaces/cardsIterfaces';
+import { IGameData } from '../../interfaces/cardsIterfaces';
+import CustomError from '../CustomError';
 
 type TFormState = {
   defaultFields: IInputTextWithRef[];
@@ -22,6 +29,8 @@ type TFormState = {
 
   dateRef: RefObject<HTMLInputElement>;
   checkBoxRef: RefObject<HTMLInputElement>;
+  formRef: RefObject<HTMLFormElement>;
+  validator: Record<string, string>;
 };
 type TFormProps = {
   addNewCard: (newCard: IGameData) => void;
@@ -36,18 +45,28 @@ class FormAddCard extends Component<TFormProps, TFormState> {
 
     dateRef: createRef<HTMLInputElement>(),
     checkBoxRef: createRef<HTMLInputElement>(),
+    formRef: createRef<HTMLFormElement>(),
+    validator: {
+      game_picture: '',
+      game_title: '',
+      game_duration: '',
+      bgg_rating: '',
+      tesera_rating: '',
+    },
   };
 
   constructor(props: TFormProps) {
     super(props);
   }
-  componentDidMount(): void {
-    this.setState({
+  async componentDidMount(): Promise<void> {
+    await this.setState({
       langs: this.createRefs<IRadio, HTMLInputElement>(langs),
       isGame: this.createRefs<IRadio, HTMLInputElement>(isGame),
       defaultFields: this.createRefs<IInputText, HTMLInputElement>(defaultFields),
       selectsData: this.createRefs<ISelect, HTMLSelectElement>(selectsData),
     });
+
+    console.log(this.state);
   }
 
   createRefs<T, U>(arrOfObj: T[]): (T & { refProp: RefObject<U> })[] {
@@ -64,14 +83,25 @@ class FormAddCard extends Component<TFormProps, TFormState> {
     return arrOfObj.map((item) => item.refProp.current);
   };
 
+  validatePicture = async () => {
+    const fieldPicture = this.state.defaultFields.find(
+      (item) => item.fieldNameId === 'game_picture'
+    );
+    if (!fieldPicture) throw new Error(`Can't find picture field`);
+
+    if (fieldPicture.refProp.current?.files?.length === 0)
+      this.setState((pState) => ({ ...pState, validator: { game_picture: 'Choose file' } }));
+    else this.setState({ validator: { ...this.state.validator, game_picture: '' } });
+  };
   validateInput = () => {};
   validateRadio = () => {};
   validateSelect = () => {};
   validateDate = () => {};
   validateCheckbox = () => {};
 
-  handleSubmitForm = (event: FormEvent<HTMLFormElement>) => {
+  handleSubmitForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    await this.validatePicture();
     const def = this.getRefFromArr(this.state.defaultFields);
     console.log(def);
 
@@ -103,17 +133,26 @@ class FormAddCard extends Component<TFormProps, TFormState> {
       game: true,
     };
     this.props.addNewCard(newCard);
+
+    console.log(this.state.validator);
+    if (this.state.formRef.current) this.state.formRef.current.reset();
   };
 
   render(): ReactNode {
     return (
-      <form onSubmit={this.handleSubmitForm} className={styles.add_card_form}>
+      <form
+        onSubmit={this.handleSubmitForm}
+        className={styles.add_card_form}
+        ref={this.state.formRef}
+      >
         {this.state.defaultFields.map((field) => {
           const { fieldNameId, fieldTitle, fieldType, refProp } = field;
+          console.log(this.state.validator[fieldNameId]);
           return (
             <label htmlFor={fieldNameId} key={fieldNameId}>
               {fieldTitle}
               <input type={fieldType} id={fieldNameId} name={fieldNameId} ref={refProp} />
+              <CustomError message={this.state.validator[fieldNameId]} />
             </label>
           );
         })}
@@ -139,29 +178,3 @@ class FormAddCard extends Component<TFormProps, TFormState> {
 }
 
 export default FormAddCard;
-
-// selectsData: ((
-//   | {
-//       values: IPublisher[];
-//       id: string;
-//       title: string;
-//     }
-//   | { values: number[]; id: string; title: string }
-// ) &
-//   ISelectRef)[];
-
-// this.langs = this.createInputRefs(langs);
-// this.isGame = this.createInputRefs(isGame);
-// this.defaultFields = this.createInputRefs(defaultFields);
-// this.selectsData = this.createSelectRefs(selectsData);
-
-// createInputRefs<T>(arrOfObj: T[]): (T & IInputRef)[] {
-//   return arrOfObj.map((obj) =>
-//     Object.assign({}, obj, { refProp: createRef<HTMLInputElement>() })
-//   );
-// }
-// createSelectRefs<T>(arrOfObj: T[]): (T & ISelectRef)[] {
-//   return arrOfObj.map((obj) =>
-//     Object.assign({}, obj, { refProp: createRef<HTMLSelectElement>() })
-//   );
-// }

@@ -1,9 +1,9 @@
 import { IPublisher } from '../../interfaces/cardsIterfaces';
 import { getGamesData } from '../../helpers';
 
-const FILD_TYPE_FILE = 'file';
-const FILD_TYPE_TEXT = 'text';
-const FILD_TYPE_NUMBER = 'number';
+export const FILD_TYPE_FILE = 'file';
+export const FILD_TYPE_TEXT = 'text';
+export const FILD_TYPE_NUMBER = 'number';
 
 export const defaultFields = [
   {
