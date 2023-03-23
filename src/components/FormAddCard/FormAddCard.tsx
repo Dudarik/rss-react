@@ -12,26 +12,42 @@ import {
   ISelectWithRef,
 } from '../../interfaces/formInterfaces';
 import CustomRadioBox from '../CustomRadioBox';
+import { IGameData } from 'interfaces/cardsIterfaces';
 
-class FormAddCard extends Component {
+type TFormState = {
   defaultFields: IInputTextWithRef[];
   langs: IIRadioWithRef[];
   isGame: IIRadioWithRef[];
   selectsData: ISelectWithRef[];
 
   dateRef: RefObject<HTMLInputElement>;
-  checkBox: RefObject<HTMLInputElement>;
+  checkBoxRef: RefObject<HTMLInputElement>;
+};
+type TFormProps = {
+  addNewCard: (newCard: IGameData) => void;
+};
 
-  constructor(props = {}) {
+class FormAddCard extends Component<TFormProps, TFormState> {
+  state: TFormState = {
+    defaultFields: [],
+    langs: [],
+    isGame: [],
+    selectsData: [],
+
+    dateRef: createRef<HTMLInputElement>(),
+    checkBoxRef: createRef<HTMLInputElement>(),
+  };
+
+  constructor(props: TFormProps) {
     super(props);
-
-    this.langs = this.createRefs<IRadio, HTMLInputElement>(langs);
-    this.isGame = this.createRefs<IRadio, HTMLInputElement>(isGame);
-    this.defaultFields = this.createRefs<IInputText, HTMLInputElement>(defaultFields);
-    this.selectsData = this.createRefs<ISelect, HTMLSelectElement>(selectsData);
-
-    this.dateRef = createRef<HTMLInputElement>();
-    this.checkBox = createRef<HTMLInputElement>();
+  }
+  componentDidMount(): void {
+    this.setState({
+      langs: this.createRefs<IRadio, HTMLInputElement>(langs),
+      isGame: this.createRefs<IRadio, HTMLInputElement>(isGame),
+      defaultFields: this.createRefs<IInputText, HTMLInputElement>(defaultFields),
+      selectsData: this.createRefs<ISelect, HTMLSelectElement>(selectsData),
+    });
   }
 
   createRefs<T, U>(arrOfObj: T[]): (T & { refProp: RefObject<U> })[] {
@@ -49,30 +65,50 @@ class FormAddCard extends Component {
   };
 
   validateInput = () => {};
+  validateRadio = () => {};
+  validateSelect = () => {};
   validateDate = () => {};
   validateCheckbox = () => {};
 
   handleSubmitForm = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const def = this.getRefFromArr(this.defaultFields);
+    const def = this.getRefFromArr(this.state.defaultFields);
     console.log(def);
-    console.log(this.defaultFields);
 
-    const myRefs = this.getRefFromArr(this.selectsData);
+    if (def[0]?.value) console.log(def[0]?.value);
+    else console.log('b=not value');
+
+    const myRefs = this.getRefFromArr(this.state.selectsData);
     console.log(myRefs);
-    console.log(this.isGame);
-    const inputrefs = this.getRefFromArr(this.isGame);
+    console.log(this.state.isGame);
+    const inputrefs = this.getRefFromArr(this.state.isGame);
 
     console.log(inputrefs);
 
-    const sel = this.getRefFromArr(this.selectsData);
+    const sel = this.getRefFromArr(this.state.selectsData);
     console.log(sel);
+    if (this.state.dateRef.current?.value) console.log(new Date(this.state.dateRef.current.value));
+    const newCard = {
+      id: Date.now(),
+      title: 'test',
+      releaseDate: '23.4.5',
+      publisher: 1,
+      players: '2-5',
+      playingTime: '60-90',
+      age: 8,
+      lang: 'russian',
+      scoreBGG: 7,
+      scoreTesera: 7,
+      image: 'tzolkin.webp',
+      game: true,
+    };
+    this.props.addNewCard(newCard);
   };
 
   render(): ReactNode {
     return (
       <form onSubmit={this.handleSubmitForm} className={styles.add_card_form}>
-        {this.defaultFields.map((field) => {
+        {this.state.defaultFields.map((field) => {
           const { fieldNameId, fieldTitle, fieldType, refProp } = field;
           return (
             <label htmlFor={fieldNameId} key={fieldNameId}>
@@ -81,20 +117,20 @@ class FormAddCard extends Component {
             </label>
           );
         })}
-        {this.selectsData.map((item) => (
+        {this.state.selectsData.map((item) => (
           <CustomSelect {...item} key={item.id} />
         ))}
 
-        <CustomRadioBox {...{ title: 'Language', name: 'lang', dataArr: this.langs }} />
-        <CustomRadioBox {...{ title: 'is Game', name: 'is_game', dataArr: this.isGame }} />
+        <CustomRadioBox {...{ title: 'Language', name: 'lang', dataArr: this.state.langs }} />
+        <CustomRadioBox {...{ title: 'is Game', name: 'is_game', dataArr: this.state.isGame }} />
 
         <label htmlFor="release_date">
           Relise date:
-          <input type="date" name="release_date" id="release_date" ref={this.dateRef} />
+          <input type="date" name="release_date" id="release_date" ref={this.state.dateRef} />
         </label>
         <label htmlFor="is_correct">
           Data correct:
-          <input type="checkbox" name="is_correct" id="is_correct" ref={this.checkBox} />
+          <input type="checkbox" name="is_correct" id="is_correct" ref={this.state.checkBoxRef} />
         </label>
         <button type="submit">submit</button>
       </form>
