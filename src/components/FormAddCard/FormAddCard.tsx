@@ -14,6 +14,13 @@ import {
 import CustomRadioBox from '../CustomRadioBox';
 import { IGameData } from '../../interfaces/cardsIterfaces';
 import CustomError from '../CustomError';
+import {
+  validateByPattern,
+  validateFirstCapitalize,
+  validateNotNull,
+  validateNumberBeetwinMinMax,
+  validateSelectNotNull,
+} from '../../helpers';
 
 type TFormState = {
   defaultFields: IInputTextWithRef[];
@@ -28,54 +35,6 @@ type TFormState = {
 };
 type TFormProps = {
   addNewCard: (newCard: IGameData) => void;
-};
-
-const validateNotNull = <T extends HTMLInputElement>(
-  refProp: RefObject<T>,
-  fieldName: string,
-  minSymbols: number
-): string => {
-  if (refProp.current && refProp.current.value.length < minSymbols)
-    return `Please input ${fieldName}, min ${minSymbols} symbols.`;
-  return '';
-};
-
-const validateFirstCapitalize = <T extends HTMLInputElement>(refProp: RefObject<T>): string => {
-  if (
-    refProp.current &&
-    refProp.current.value &&
-    refProp.current.value[0] !== refProp.current.value[0].toLocaleUpperCase()
-  )
-    return `The first letter must be a capital letter.`;
-  return '';
-};
-
-const validateByPattern = <T extends HTMLInputElement>(
-  refProp: RefObject<T>,
-  patternMessage: string,
-  pattern: RegExp
-): string => {
-  if (refProp.current && !refProp.current.value)
-    return `Please input value! Must match template: ${patternMessage}`;
-
-  if (refProp.current && refProp.current.value && !pattern.test(refProp.current.value))
-    return `Must match template: ${patternMessage}`;
-  return '';
-};
-
-const validateNumberBeetwinMinMax = <T extends HTMLInputElement>(
-  refProp: RefObject<T>,
-  min: number,
-  max: number
-): string => {
-  if (refProp.current && !refProp.current.value) return `Please input value from ${min} to ${max}`;
-
-  if (refProp.current && refProp.current.value) {
-    const floatNumber = parseFloat(refProp.current.value);
-
-    if (floatNumber < min || floatNumber > max) return `Must be from ${min} to ${max}`;
-  }
-  return '';
 };
 
 class FormAddCard extends Component<TFormProps, TFormState> {
@@ -98,6 +57,10 @@ class FormAddCard extends Component<TFormProps, TFormState> {
       lang: '',
       is_game: '',
       is_correct: '',
+      select_publishers: '',
+      select_min_players: '',
+      select_max_players: '',
+      select_age: '',
     },
   };
 
@@ -205,10 +168,10 @@ class FormAddCard extends Component<TFormProps, TFormState> {
     });
   };
 
-  private validateRadio = async () => {
+  private validationRadio = async () => {
     const langField = this.getRefFromArr(this.state.langs) as HTMLInputElement[];
     const isGameField = this.getRefFromArr(this.state.isGame) as HTMLInputElement[];
-    console.log(langField);
+
     this.setValidationResultToState({
       lang:
         langField.find((item) => item.checked) === undefined
@@ -221,6 +184,14 @@ class FormAddCard extends Component<TFormProps, TFormState> {
     });
   };
 
+  private validationSelects = async () => {
+    this.state.selectsData.forEach((select) => {
+      this.setValidationResultToState({
+        [select.id]: validateSelectNotNull(select.refProp, select.title),
+      });
+    });
+  };
+
   handleSubmitForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await this.validatePicture();
@@ -229,23 +200,9 @@ class FormAddCard extends Component<TFormProps, TFormState> {
     await this.validationRating();
     await this.validationDate();
     await this.validationCheckBox();
-    await this.validateRadio();
+    await this.validationRadio();
+    await this.validationSelects();
 
-    const def = this.getRefFromArr(this.state.defaultFields);
-    // console.log(def);
-
-    if (def[0]?.value) console.log(def[0]?.value);
-    else console.log('b=not value');
-
-    const myRefs = this.getRefFromArr(this.state.selectsData);
-    // console.log(myRefs);
-    // console.log(this.state.isGame);
-    const inputrefs = this.getRefFromArr(this.state.isGame);
-
-    // console.log(inputrefs);
-
-    const sel = this.getRefFromArr(this.state.selectsData);
-    // console.log(sel);
     if (this.state.dateRef.current?.value) console.log(new Date(this.state.dateRef.current.value));
     const newCard = {
       id: Date.now(),
@@ -287,7 +244,10 @@ class FormAddCard extends Component<TFormProps, TFormState> {
           );
         })}
         {this.state.selectsData.map((item) => (
-          <CustomSelect {...item} key={item.id} />
+          <div key={item.id}>
+            <CustomSelect {...item} />
+            <CustomError message={this.state.validator[item.id]} />
+          </div>
         ))}
 
         <CustomRadioBox {...{ title: 'Language', name: 'lang', dataArr: this.state.langs }} />
