@@ -2,13 +2,7 @@ import CustomSelect from '../CustomSelect';
 import React, { FormEvent, Component, ReactNode, createRef, RefObject } from 'react';
 
 import styles from './FormAddCard.module.scss';
-import {
-  defaultFields,
-  selectsData,
-  langs,
-  isGame,
-  FILD_TYPE_FILE,
-} from './FormAddCardDefaultValues';
+import { defaultFields, selectsData, langs, isGame } from './FormAddCardDefaultValues';
 import {
   IInputText,
   IInputTextWithRef,
@@ -34,6 +28,51 @@ type TFormState = {
 };
 type TFormProps = {
   addNewCard: (newCard: IGameData) => void;
+};
+
+const validateNotNull = <T extends HTMLInputElement>(
+  refProp: RefObject<T>,
+  fieldName: string,
+  minSymbols: number
+): string => {
+  if (refProp.current && refProp.current.value.length < minSymbols)
+    return `Please input ${fieldName}, min ${minSymbols} symbols.`;
+  return '';
+};
+
+const validateFirstCapitalize = <T extends HTMLInputElement>(refProp: RefObject<T>): string => {
+  if (
+    refProp.current &&
+    refProp.current.value &&
+    refProp.current.value[0] !== refProp.current.value[0].toLocaleUpperCase()
+  )
+    return `The first letter must be a capital letter.`;
+  return '';
+};
+
+const validateByPattern = <T extends HTMLInputElement>(
+  refProp: RefObject<T>,
+  patternMessage: string,
+  pattern: RegExp
+): string => {
+  if (refProp.current && refProp.current.value && !pattern.test(refProp.current.value))
+    return `Must match template ${patternMessage}`;
+  return '';
+};
+
+const validateNumberBeetwinMinMax = <T extends HTMLInputElement>(
+  refProp: RefObject<T>,
+  min: number,
+  max: number
+): string => {
+  if (refProp.current && !refProp.current.value) return `Please input value from ${min} to ${max}`;
+
+  if (refProp.current && refProp.current.value) {
+    const floatNumber = parseFloat(refProp.current.value);
+
+    if (floatNumber < min || floatNumber > max) return `Must be from ${min} to ${max}`;
+  }
+  return '';
 };
 
 class FormAddCard extends Component<TFormProps, TFormState> {
@@ -69,7 +108,7 @@ class FormAddCard extends Component<TFormProps, TFormState> {
     console.log(this.state);
   }
 
-  createRefs<T, U>(arrOfObj: T[]): (T & { refProp: RefObject<U> })[] {
+  private createRefs<T, U>(arrOfObj: T[]): (T & { refProp: RefObject<U> })[] {
     return arrOfObj.map((obj) =>
       Object.assign({}, obj, {
         refProp: createRef<U>(),
@@ -77,23 +116,90 @@ class FormAddCard extends Component<TFormProps, TFormState> {
     );
   }
 
-  getRefFromArr = <T extends IInputTextWithRef | IIRadioWithRef | ISelectWithRef>(
+  private getRefFromArr = <T extends IInputTextWithRef | IIRadioWithRef | ISelectWithRef>(
     arrOfObj: T[]
   ) => {
     return arrOfObj.map((item) => item.refProp.current);
   };
 
-  validatePicture = async () => {
-    const fieldPicture = this.state.defaultFields.find(
-      (item) => item.fieldNameId === 'game_picture'
+  private getFieldFromDefalutFields = (fieldTitle: string) => {
+    const fieldTitleReturn = this.state.defaultFields.find(
+      (item) => item.fieldNameId === fieldTitle
     );
-    if (!fieldPicture) throw new Error(`Can't find picture field`);
+
+    if (!fieldTitleReturn) throw new Error(`Can't find ${fieldTitle} field`);
+
+    return fieldTitleReturn;
+  };
+
+  private validatePicture = async () => {
+    const fieldPicture = this.getFieldFromDefalutFields('game_picture');
 
     if (fieldPicture.refProp.current?.files?.length === 0)
-      this.setState((pState) => ({ ...pState, validator: { game_picture: 'Choose file' } }));
-    else this.setState({ validator: { ...this.state.validator, game_picture: '' } });
+      this.setState((pState) => ({
+        ...pState,
+        validator: { ...pState.validator, game_picture: 'Choose file' },
+      }));
+    else
+      this.setState((pState) => ({
+        ...pState,
+        validator: { ...pState.validator, game_picture: '' },
+      }));
   };
-  validateInput = () => {};
+
+  private validateGameTitle = async () => {
+    const fieldGameTitle = this.getFieldFromDefalutFields('game_title');
+
+    let validateMessage = validateNotNull(fieldGameTitle.refProp, 'game title', 3);
+    validateMessage += validateFirstCapitalize(fieldGameTitle.refProp);
+
+    this.setState((pState) => ({
+      ...pState,
+      validator: { ...pState.validator, game_title: validateMessage },
+    }));
+  };
+
+  private validateGameDuration = async () => {
+    const fieldGameTitle = this.getFieldFromDefalutFields('game_duration');
+
+    let validateMessage = validateNotNull(fieldGameTitle.refProp, 'game duration', 3);
+
+    validateMessage += validateByPattern(
+      fieldGameTitle.refProp,
+      `60-120 in minutes (^\d{1,2}-\d{1,3}$)`,
+      /^\d{1,2}-\d{1,3}$/
+    );
+
+    this.setState((pState) => ({
+      ...pState,
+      validator: { ...pState.validator, game_duration: validateMessage },
+    }));
+  };
+
+  private validationBggRating = async () => {
+    const fieldBggRating = this.getFieldFromDefalutFields('bgg_rating');
+
+    this.setState((pState) => ({
+      ...pState,
+      validator: {
+        ...pState.validator,
+        bgg_rating: validateNumberBeetwinMinMax(fieldBggRating.refProp, 0, 10),
+      },
+    }));
+  };
+
+  private validationTeseraRating = async () => {
+    const fieldTeseraRating = this.getFieldFromDefalutFields('tesera_rating');
+
+    this.setState((pState) => ({
+      ...pState,
+      validator: {
+        ...pState.validator,
+        tesera_rating: validateNumberBeetwinMinMax(fieldTeseraRating.refProp, 0, 10),
+      },
+    }));
+  };
+
   validateRadio = () => {};
   validateSelect = () => {};
   validateDate = () => {};
@@ -102,21 +208,25 @@ class FormAddCard extends Component<TFormProps, TFormState> {
   handleSubmitForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await this.validatePicture();
+    await this.validateGameTitle();
+    await this.validateGameDuration();
+    await this.validationBggRating();
+    await this.validationTeseraRating();
     const def = this.getRefFromArr(this.state.defaultFields);
-    console.log(def);
+    // console.log(def);
 
     if (def[0]?.value) console.log(def[0]?.value);
     else console.log('b=not value');
 
     const myRefs = this.getRefFromArr(this.state.selectsData);
-    console.log(myRefs);
-    console.log(this.state.isGame);
+    // console.log(myRefs);
+    // console.log(this.state.isGame);
     const inputrefs = this.getRefFromArr(this.state.isGame);
 
-    console.log(inputrefs);
+    // console.log(inputrefs);
 
     const sel = this.getRefFromArr(this.state.selectsData);
-    console.log(sel);
+    // console.log(sel);
     if (this.state.dateRef.current?.value) console.log(new Date(this.state.dateRef.current.value));
     const newCard = {
       id: Date.now(),
@@ -135,7 +245,7 @@ class FormAddCard extends Component<TFormProps, TFormState> {
     this.props.addNewCard(newCard);
 
     console.log(this.state.validator);
-    if (this.state.formRef.current) this.state.formRef.current.reset();
+    // if (this.state.formRef.current) this.state.formRef.current.reset();
   };
 
   render(): ReactNode {
@@ -147,7 +257,8 @@ class FormAddCard extends Component<TFormProps, TFormState> {
       >
         {this.state.defaultFields.map((field) => {
           const { fieldNameId, fieldTitle, fieldType, refProp } = field;
-          console.log(this.state.validator[fieldNameId]);
+          // console.log(this.state.validator[fieldNameId]);
+
           return (
             <label htmlFor={fieldNameId} key={fieldNameId}>
               {fieldTitle}

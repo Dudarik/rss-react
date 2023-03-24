@@ -39,7 +39,7 @@ const publishers = {
   title: 'Choose publisher',
 };
 const min_players = {
-  values: [1, 2, 3, 4],
+  values: [1, 2],
   id: 'select_min_players',
   title: 'Min gamers',
 };
