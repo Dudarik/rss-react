@@ -55,8 +55,11 @@ const validateByPattern = <T extends HTMLInputElement>(
   patternMessage: string,
   pattern: RegExp
 ): string => {
+  if (refProp.current && !refProp.current.value)
+    return `Please input value! Must match template: ${patternMessage}`;
+
   if (refProp.current && refProp.current.value && !pattern.test(refProp.current.value))
-    return `Must match template ${patternMessage}`;
+    return `Must match template: ${patternMessage}`;
   return '';
 };
 
@@ -91,6 +94,10 @@ class FormAddCard extends Component<TFormProps, TFormState> {
       game_duration: '',
       bgg_rating: '',
       tesera_rating: '',
+      release_date: '',
+      lang: '',
+      is_game: '',
+      is_correct: '',
     },
   };
 
@@ -132,19 +139,19 @@ class FormAddCard extends Component<TFormProps, TFormState> {
     return fieldTitleReturn;
   };
 
+  private setValidationResultToState = async (validateItems: Record<string, string>) => {
+    await this.setState((pState) => ({
+      ...pState,
+      validator: { ...pState.validator, ...validateItems },
+    }));
+  };
+
   private validatePicture = async () => {
     const fieldPicture = this.getFieldFromDefalutFields('game_picture');
 
     if (fieldPicture.refProp.current?.files?.length === 0)
-      this.setState((pState) => ({
-        ...pState,
-        validator: { ...pState.validator, game_picture: 'Choose file' },
-      }));
-    else
-      this.setState((pState) => ({
-        ...pState,
-        validator: { ...pState.validator, game_picture: '' },
-      }));
+      this.setValidationResultToState({ game_picture: 'Choose file' });
+    else this.setValidationResultToState({ game_picture: '' });
   };
 
   private validateGameTitle = async () => {
@@ -153,10 +160,7 @@ class FormAddCard extends Component<TFormProps, TFormState> {
     let validateMessage = validateNotNull(fieldGameTitle.refProp, 'game title', 3);
     validateMessage += validateFirstCapitalize(fieldGameTitle.refProp);
 
-    this.setState((pState) => ({
-      ...pState,
-      validator: { ...pState.validator, game_title: validateMessage },
-    }));
+    this.setValidationResultToState({ game_title: validateMessage });
   };
 
   private validateGameDuration = async () => {
@@ -170,48 +174,63 @@ class FormAddCard extends Component<TFormProps, TFormState> {
       /^\d{1,2}-\d{1,3}$/
     );
 
-    this.setState((pState) => ({
-      ...pState,
-      validator: { ...pState.validator, game_duration: validateMessage },
-    }));
+    this.setValidationResultToState({ game_duration: validateMessage });
   };
 
-  private validationBggRating = async () => {
+  private validationRating = async () => {
     const fieldBggRating = this.getFieldFromDefalutFields('bgg_rating');
-
-    this.setState((pState) => ({
-      ...pState,
-      validator: {
-        ...pState.validator,
-        bgg_rating: validateNumberBeetwinMinMax(fieldBggRating.refProp, 0, 10),
-      },
-    }));
-  };
-
-  private validationTeseraRating = async () => {
     const fieldTeseraRating = this.getFieldFromDefalutFields('tesera_rating');
 
-    this.setState((pState) => ({
-      ...pState,
-      validator: {
-        ...pState.validator,
-        tesera_rating: validateNumberBeetwinMinMax(fieldTeseraRating.refProp, 0, 10),
-      },
-    }));
+    this.setValidationResultToState({
+      bgg_rating: validateNumberBeetwinMinMax(fieldBggRating.refProp, 0, 10),
+      tesera_rating: validateNumberBeetwinMinMax(fieldTeseraRating.refProp, 0, 10),
+    });
   };
 
-  validateRadio = () => {};
-  validateSelect = () => {};
-  validateDate = () => {};
-  validateCheckbox = () => {};
+  private validationDate = async () => {
+    this.setValidationResultToState({
+      release_date: validateByPattern(
+        this.state.dateRef,
+        'Please input coorrect date in past present or future from 1900-2999 year',
+        /^((19|20)\d\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/
+      ),
+    });
+  };
+
+  private validationCheckBox = async () => {
+    this.setValidationResultToState({
+      is_correct: this.state.checkBoxRef.current?.checked
+        ? ''
+        : 'Please confirm that the data entered is correct',
+    });
+  };
+
+  private validateRadio = async () => {
+    const langField = this.getRefFromArr(this.state.langs) as HTMLInputElement[];
+    const isGameField = this.getRefFromArr(this.state.isGame) as HTMLInputElement[];
+    console.log(langField);
+    this.setValidationResultToState({
+      lang:
+        langField.find((item) => item.checked) === undefined
+          ? `Please select 1 of ${langField.length}`
+          : '',
+      is_game:
+        isGameField.find((item) => item.checked) === undefined
+          ? `Please select 1 of ${isGameField.length}`
+          : '',
+    });
+  };
 
   handleSubmitForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await this.validatePicture();
     await this.validateGameTitle();
     await this.validateGameDuration();
-    await this.validationBggRating();
-    await this.validationTeseraRating();
+    await this.validationRating();
+    await this.validationDate();
+    await this.validationCheckBox();
+    await this.validateRadio();
+
     const def = this.getRefFromArr(this.state.defaultFields);
     // console.log(def);
 
@@ -272,15 +291,20 @@ class FormAddCard extends Component<TFormProps, TFormState> {
         ))}
 
         <CustomRadioBox {...{ title: 'Language', name: 'lang', dataArr: this.state.langs }} />
+        <CustomError message={this.state.validator['lang']} />
+
         <CustomRadioBox {...{ title: 'is Game', name: 'is_game', dataArr: this.state.isGame }} />
+        <CustomError message={this.state.validator['is_game']} />
 
         <label htmlFor="release_date">
           Relise date:
           <input type="date" name="release_date" id="release_date" ref={this.state.dateRef} />
+          <CustomError message={this.state.validator['release_date']} />
         </label>
         <label htmlFor="is_correct">
           Data correct:
           <input type="checkbox" name="is_correct" id="is_correct" ref={this.state.checkBoxRef} />
+          <CustomError message={this.state.validator['is_correct']} />
         </label>
         <button type="submit">submit</button>
       </form>
