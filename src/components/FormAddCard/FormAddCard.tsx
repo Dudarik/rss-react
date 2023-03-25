@@ -28,6 +28,8 @@ type TFormState = {
   isGame: IIRadioWithRef[];
   selectsData: ISelectWithRef[];
 
+  infoMessage: string;
+
   dateRef: RefObject<HTMLInputElement>;
   checkBoxRef: RefObject<HTMLInputElement>;
   formRef: RefObject<HTMLFormElement>;
@@ -43,6 +45,8 @@ class FormAddCard extends Component<TFormProps, TFormState> {
     langs: [],
     isGame: [],
     selectsData: [],
+
+    infoMessage: '',
 
     dateRef: createRef<HTMLInputElement>(),
     checkBoxRef: createRef<HTMLInputElement>(),
@@ -216,8 +220,6 @@ class FormAddCard extends Component<TFormProps, TFormState> {
       }
     }
 
-    // if (this.state.dateRef.current?.value) console.log(new Date(this.state.dateRef.current.value));
-
     if (valid_form) {
       const path_img = this.getFieldFromDefalutFields('game_picture').refProp.current
         ?.files as FileList;
@@ -241,10 +243,11 @@ class FormAddCard extends Component<TFormProps, TFormState> {
 
       const lang = langField.find((item) => item.checked)?.value as string;
       const game = (isGameField.find((item) => item.checked)?.value as string) === 'Game';
+      const title = this.getFieldFromDefalutFields('game_title').refProp.current?.value as string;
 
       const newCard = {
         id: Date.now(),
-        title: this.getFieldFromDefalutFields('game_title').refProp.current?.value as string,
+        title,
         releaseDate: this.state.dateRef.current?.value as string,
         publisher,
         players: `${min_players}-${max_players}`,
@@ -265,7 +268,11 @@ class FormAddCard extends Component<TFormProps, TFormState> {
 
       this.props.addNewCard(newCard);
 
+      this.setState({ infoMessage: `Game ${title} was added.` });
       if (this.state.formRef.current) this.state.formRef.current.reset();
+      setTimeout(() => {
+        this.setState({ infoMessage: `` });
+      }, 3000);
     }
   };
 
@@ -276,53 +283,68 @@ class FormAddCard extends Component<TFormProps, TFormState> {
         className={styles.add_card_form}
         ref={this.state.formRef}
       >
-        <div className={styles.default_fields}>
-          {this.state.defaultFields.map((field) => {
-            const { fieldNameId, fieldTitle, fieldType, refProp } = field;
+        <div className={styles.top_section}>
+          <div className={styles.default_fields}>
+            {this.state.defaultFields.map((field) => {
+              const { fieldNameId, fieldTitle, fieldType, placeholder, refProp } = field;
 
-            return (
-              <label htmlFor={fieldNameId} key={fieldNameId}>
-                {fieldTitle}
-                <input type={fieldType} id={fieldNameId} name={fieldNameId} ref={refProp} />
-                <CustomError message={this.state.validator[fieldNameId]} />
-              </label>
-            );
-          })}
-        </div>
+              return (
+                <div className={styles.default_field} key={fieldNameId}>
+                  <label htmlFor={fieldNameId} className={styles.default_label}>
+                    {fieldTitle}
+                    <input
+                      type={fieldType}
+                      id={fieldNameId}
+                      name={fieldNameId}
+                      ref={refProp}
+                      placeholder={placeholder}
+                    />
+                  </label>
+                  <CustomError message={this.state.validator[fieldNameId]} />
+                </div>
+              );
+            })}
+          </div>
 
-        <div className={styles.select_fields}>
-          {this.state.selectsData.map((item) => (
-            <div key={item.id}>
-              <CustomSelect {...item} />
-              <CustomError message={this.state.validator[item.id]} />
+          <div className={styles.select_fields}>
+            {this.state.selectsData.map((item) => (
+              <div key={item.id} className={styles.select_field}>
+                <CustomSelect {...item} />
+                <CustomError message={this.state.validator[item.id]} />
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.radio_fields}>
+            <div className={styles.radio_section}>
+              <CustomRadioBox
+                {...{ title: 'is Game', name: 'is_game', dataArr: this.state.isGame }}
+              />
+              <CustomError message={this.state.validator['is_game']} />
             </div>
-          ))}
-        </div>
-
-        <div className={styles.radio_fields}>
-          <div className={styles.radio_section}>
-            <CustomRadioBox {...{ title: 'Language', name: 'lang', dataArr: this.state.langs }} />
-            <CustomError message={this.state.validator['lang']} />
-          </div>
-          <div className={styles.radio_section}>
-            <CustomRadioBox
-              {...{ title: 'is Game', name: 'is_game', dataArr: this.state.isGame }}
-            />
-            <CustomError message={this.state.validator['is_game']} />
+            <div className={styles.radio_section}>
+              <CustomRadioBox {...{ title: 'Language', name: 'lang', dataArr: this.state.langs }} />
+              <CustomError message={this.state.validator['lang']} />
+            </div>
           </div>
         </div>
 
-        <label htmlFor="release_date" className={styles.release_date}>
-          Relise date:
-          <input type="date" name="release_date" id="release_date" ref={this.state.dateRef} />
+        <div className={styles.release_date}>
+          <label htmlFor="release_date">
+            Relise date:
+            <input type="date" name="release_date" id="release_date" ref={this.state.dateRef} />
+          </label>
           <CustomError message={this.state.validator['release_date']} />
-        </label>
+        </div>
 
         <label htmlFor="is_correct" className={styles.is_correct}>
           Data correct:
           <input type="checkbox" name="is_correct" id="is_correct" ref={this.state.checkBoxRef} />
           <CustomError message={this.state.validator['is_correct']} />
         </label>
+        {this.state.infoMessage.length > 0 && (
+          <div className={styles.info_message}>{this.state.infoMessage}</div>
+        )}
         <button type="submit" className={styles.add_button}>
           submit
         </button>

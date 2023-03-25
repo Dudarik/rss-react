@@ -3,16 +3,42 @@
   flex-direction: column;
   flex-wrap: wrap;
   gap: 1rem;
-  border: 1px dotted green;
   margin-bottom: 3rem;
+
+  max-width: 55rem;
+  position: relative;
+
+  .top_section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
   .default_fields,
   .select_fields {
+    border: 1px solid lightgray;
+    padding: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+    max-width: 20rem;
+  }
+
+  .default_field,
+  .select_field {
     display: flex;
     flex-direction: column;
+    label {
+      display: flex;
+      width: 100%;
+
+      justify-content: space-between;
+    }
   }
+
   .radio_fields {
     display: flex;
     gap: 1rem;
+    flex-direction: column;
     .radio_section {
       display: flex;
       flex-direction: column;
@@ -26,7 +52,9 @@
 
   .release_date {
     display: flex;
-    gap: 1rem;
+    align-items: center;
+
+    flex-direction: column;
   }
 
   .is_correct {
@@ -44,5 +72,25 @@
     &:hover {
       background-color: #4caf50;
     }
+  }
+  .info_message {
+    position: absolute;
+
+    top: calc(50% - 2.5rem);
+    left: calc(50% - 7.5rem);
+
+    background-color: #4caf50;
+    color: white;
+
+    width: 15rem;
+    height: 5rem;
+
+    border-radius: 0.5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
   }
 }

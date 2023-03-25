@@ -18,7 +18,8 @@ export const defaultFields = [
   },
   {
     fieldNameId: 'game_duration',
-    fieldTitle: 'Game duration in minutes (example: 60-90)',
+    fieldTitle: 'Game duration in minutes',
+    placeholder: 'example: 60-90',
     fieldType: FILD_TYPE_TEXT,
   },
   {

@@ -5,6 +5,7 @@ export interface IInputText {
   fieldNameId: string;
   fieldTitle: string;
   fieldType: string;
+  placeholder?: string;
 }
 
 export interface IRadio {
