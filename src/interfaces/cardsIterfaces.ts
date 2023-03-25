@@ -17,6 +17,7 @@ export interface IGameData {
   scoreTesera: number;
   image: string;
   game: boolean;
+  blobImg?: boolean;
 }
 
 export interface IGamesData {

@@ -32,12 +32,17 @@ class Card extends Component<ICardProps> {
       game: isGame,
       publisherImage,
       publisherTitle,
+      blobImg,
     } = this.props;
 
     return (
       <li className={styles.card}>
         <div className={styles.image}>
-          <img src={PATH_TO_GAME_IMG + image} alt={title} width="200" />
+          {blobImg ? (
+            <img src={image} alt={title} width="200" />
+          ) : (
+            <img src={PATH_TO_GAME_IMG + image} alt={title} width="200" />
+          )}
         </div>
         <Link to={`products/${id}`} className={styles.card_title}>
           {title}

@@ -67,15 +67,13 @@ class FormAddCard extends Component<TFormProps, TFormState> {
   constructor(props: TFormProps) {
     super(props);
   }
-  async componentDidMount(): Promise<void> {
-    await this.setState({
+  componentDidMount(): void {
+    this.setState({
       langs: this.createRefs<IRadio, HTMLInputElement>(langs),
       isGame: this.createRefs<IRadio, HTMLInputElement>(isGame),
       defaultFields: this.createRefs<IInputText, HTMLInputElement>(defaultFields),
       selectsData: this.createRefs<ISelect, HTMLSelectElement>(selectsData),
     });
-
-    console.log(this.state);
   }
 
   private createRefs<T, U>(arrOfObj: T[]): (T & { refProp: RefObject<U> })[] {
@@ -96,6 +94,14 @@ class FormAddCard extends Component<TFormProps, TFormState> {
     const fieldTitleReturn = this.state.defaultFields.find(
       (item) => item.fieldNameId === fieldTitle
     );
+
+    if (!fieldTitleReturn) throw new Error(`Can't find ${fieldTitle} field`);
+
+    return fieldTitleReturn;
+  };
+
+  private getSelectFieldFromSelectFields = (fieldTitle: string) => {
+    const fieldTitleReturn = this.state.selectsData.find((item) => item.id === fieldTitle);
 
     if (!fieldTitleReturn) throw new Error(`Can't find ${fieldTitle} field`);
 
@@ -154,7 +160,7 @@ class FormAddCard extends Component<TFormProps, TFormState> {
     this.setValidationResultToState({
       release_date: validateByPattern(
         this.state.dateRef,
-        'Please input coorrect date in past present or future from 1900-2999 year',
+        'Please input coorrect date in past present or future from 1900-2099 year',
         /^((19|20)\d\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/
       ),
     });
@@ -192,7 +198,7 @@ class FormAddCard extends Component<TFormProps, TFormState> {
     });
   };
 
-  handleSubmitForm = async (event: FormEvent<HTMLFormElement>) => {
+  private handleSubmitForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await this.validatePicture();
     await this.validateGameTitle();
@@ -203,25 +209,67 @@ class FormAddCard extends Component<TFormProps, TFormState> {
     await this.validationRadio();
     await this.validationSelects();
 
-    if (this.state.dateRef.current?.value) console.log(new Date(this.state.dateRef.current.value));
-    const newCard = {
-      id: Date.now(),
-      title: 'test',
-      releaseDate: '23.4.5',
-      publisher: 1,
-      players: '2-5',
-      playingTime: '60-90',
-      age: 8,
-      lang: 'russian',
-      scoreBGG: 7,
-      scoreTesera: 7,
-      image: 'tzolkin.webp',
-      game: true,
-    };
-    this.props.addNewCard(newCard);
+    let valid_form = true;
+    const validatorValues = Object.values(this.state.validator);
 
-    console.log(this.state.validator);
-    // if (this.state.formRef.current) this.state.formRef.current.reset();
+    for (let i = 0; i < validatorValues.length; i++) {
+      if (validatorValues[i].length) {
+        valid_form = false;
+        break;
+      }
+    }
+
+    // if (this.state.dateRef.current?.value) console.log(new Date(this.state.dateRef.current.value));
+
+    if (valid_form) {
+      const path_img = this.getFieldFromDefalutFields('game_picture').refProp.current
+        ?.files as FileList;
+
+      const image = path_img ? window.URL.createObjectURL(path_img[0]) : '';
+
+      const min_players =
+        this.getSelectFieldFromSelectFields('select_min_players').refProp.current?.value;
+      const max_players =
+        this.getSelectFieldFromSelectFields('select_max_players').refProp.current?.value;
+      const age = parseInt(
+        this.getSelectFieldFromSelectFields('select_age').refProp.current?.value as string
+      );
+
+      const publisher = parseInt(
+        this.getSelectFieldFromSelectFields('select_publishers').refProp.current?.value as string
+      );
+
+      const langField = this.getRefFromArr(this.state.langs) as HTMLInputElement[];
+      const isGameField = this.getRefFromArr(this.state.isGame) as HTMLInputElement[];
+
+      const lang = langField.find((item) => item.checked)?.value as string;
+      const game = (isGameField.find((item) => item.checked)?.value as string) === 'Game';
+
+      const newCard = {
+        id: Date.now(),
+        title: this.getFieldFromDefalutFields('game_title').refProp.current?.value as string,
+        releaseDate: this.state.dateRef.current?.value as string,
+        publisher,
+        players: `${min_players}-${max_players}`,
+        playingTime: this.getFieldFromDefalutFields('game_duration').refProp.current
+          ?.value as string,
+        age,
+        lang,
+        scoreBGG: parseFloat(
+          this.getFieldFromDefalutFields('bgg_rating').refProp.current?.value as string
+        ),
+        scoreTesera: parseFloat(
+          this.getFieldFromDefalutFields('tesera_rating').refProp.current?.value as string
+        ),
+        image,
+        game,
+        blobImg: true,
+      };
+
+      this.props.addNewCard(newCard);
+
+      if (this.state.formRef.current) this.state.formRef.current.reset();
+    }
   };
 
   render(): ReactNode {
@@ -233,7 +281,6 @@ class FormAddCard extends Component<TFormProps, TFormState> {
       >
         {this.state.defaultFields.map((field) => {
           const { fieldNameId, fieldTitle, fieldType, refProp } = field;
-          // console.log(this.state.validator[fieldNameId]);
 
           return (
             <label htmlFor={fieldNameId} key={fieldNameId}>
