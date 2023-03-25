@@ -1,4 +1,48 @@
 .add_card_form {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border: 1px dotted green;
+  margin-bottom: 3rem;
+  .default_fields,
+  .select_fields {
+    display: flex;
+    flex-direction: column;
+  }
+  .radio_fields {
+    display: flex;
+    gap: 1rem;
+    .radio_section {
+      display: flex;
+      flex-direction: column;
+
+      fieldset {
+        border: 1px solid lightgray;
+        padding: 0.5rem;
+      }
+    }
+  }
+
+  .release_date {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .is_correct {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .add_button {
+    color: white;
+    font-weight: bold;
+    background-color: #43a047;
+    border: none;
+    &:hover {
+      background-color: #4caf50;
+    }
+  }
 }

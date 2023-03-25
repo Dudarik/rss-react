@@ -34,7 +34,7 @@ class FormPage extends Page {
         {this.state.cardsData.games.length ? (
           <CardsList {...this.state.cardsData} />
         ) : (
-          'No cards added'
+          <h2>No cards added</h2>
         )}
       </main>
     );

@@ -64,9 +64,6 @@ class FormAddCard extends Component<TFormProps, TFormState> {
     },
   };
 
-  constructor(props: TFormProps) {
-    super(props);
-  }
   componentDidMount(): void {
     this.setState({
       langs: this.createRefs<IRadio, HTMLInputElement>(langs),
@@ -279,41 +276,56 @@ class FormAddCard extends Component<TFormProps, TFormState> {
         className={styles.add_card_form}
         ref={this.state.formRef}
       >
-        {this.state.defaultFields.map((field) => {
-          const { fieldNameId, fieldTitle, fieldType, refProp } = field;
+        <div className={styles.default_fields}>
+          {this.state.defaultFields.map((field) => {
+            const { fieldNameId, fieldTitle, fieldType, refProp } = field;
 
-          return (
-            <label htmlFor={fieldNameId} key={fieldNameId}>
-              {fieldTitle}
-              <input type={fieldType} id={fieldNameId} name={fieldNameId} ref={refProp} />
-              <CustomError message={this.state.validator[fieldNameId]} />
-            </label>
-          );
-        })}
-        {this.state.selectsData.map((item) => (
-          <div key={item.id}>
-            <CustomSelect {...item} />
-            <CustomError message={this.state.validator[item.id]} />
+            return (
+              <label htmlFor={fieldNameId} key={fieldNameId}>
+                {fieldTitle}
+                <input type={fieldType} id={fieldNameId} name={fieldNameId} ref={refProp} />
+                <CustomError message={this.state.validator[fieldNameId]} />
+              </label>
+            );
+          })}
+        </div>
+
+        <div className={styles.select_fields}>
+          {this.state.selectsData.map((item) => (
+            <div key={item.id}>
+              <CustomSelect {...item} />
+              <CustomError message={this.state.validator[item.id]} />
+            </div>
+          ))}
+        </div>
+
+        <div className={styles.radio_fields}>
+          <div className={styles.radio_section}>
+            <CustomRadioBox {...{ title: 'Language', name: 'lang', dataArr: this.state.langs }} />
+            <CustomError message={this.state.validator['lang']} />
           </div>
-        ))}
+          <div className={styles.radio_section}>
+            <CustomRadioBox
+              {...{ title: 'is Game', name: 'is_game', dataArr: this.state.isGame }}
+            />
+            <CustomError message={this.state.validator['is_game']} />
+          </div>
+        </div>
 
-        <CustomRadioBox {...{ title: 'Language', name: 'lang', dataArr: this.state.langs }} />
-        <CustomError message={this.state.validator['lang']} />
-
-        <CustomRadioBox {...{ title: 'is Game', name: 'is_game', dataArr: this.state.isGame }} />
-        <CustomError message={this.state.validator['is_game']} />
-
-        <label htmlFor="release_date">
+        <label htmlFor="release_date" className={styles.release_date}>
           Relise date:
           <input type="date" name="release_date" id="release_date" ref={this.state.dateRef} />
           <CustomError message={this.state.validator['release_date']} />
         </label>
-        <label htmlFor="is_correct">
+
+        <label htmlFor="is_correct" className={styles.is_correct}>
           Data correct:
           <input type="checkbox" name="is_correct" id="is_correct" ref={this.state.checkBoxRef} />
           <CustomError message={this.state.validator['is_correct']} />
         </label>
-        <button type="submit">submit</button>
+        <button type="submit" className={styles.add_button}>
+          submit
+        </button>
       </form>
     );
   }

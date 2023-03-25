@@ -13,12 +13,12 @@ export const defaultFields = [
   },
   {
     fieldNameId: 'game_title',
-    fieldTitle: 'Add game title',
+    fieldTitle: 'Game title',
     fieldType: FILD_TYPE_TEXT,
   },
   {
     fieldNameId: 'game_duration',
-    fieldTitle: 'Add game duration in minutes (example: 60-90)',
+    fieldTitle: 'Game duration in minutes (example: 60-90)',
     fieldType: FILD_TYPE_TEXT,
   },
   {
