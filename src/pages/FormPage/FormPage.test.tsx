@@ -35,6 +35,13 @@ describe('<FormPage />', () => {
   test('FormPage adds cards properly', () => {
     const page = new FormPage({});
 
+    page.state = {
+      cardsData: {
+        publishers: [],
+        games: [],
+      },
+    };
+
     page.addNewCard(card);
 
     expect(page.state.cardsData.games.length).toBe(1);

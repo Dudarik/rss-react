@@ -8,6 +8,7 @@ const exclude = [
   '**/src/interfaces/**',
   '**/cypress/**',
   '**/.{idea,git,cache,output,temp}/**',
+  '**/src/helpers/validators**',
   '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
   '**/*.d.ts',
   '**/main.tsx',
