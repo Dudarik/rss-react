@@ -1,0 +1,22 @@
+.info {
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  .info_item {
+    display: flex;
+    align-items: center;
+
+    i {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 2rem;
+    }
+    .item_data {
+      margin-left: 0.2rem;
+      font-weight: bold;
+    }
+  }
+}
