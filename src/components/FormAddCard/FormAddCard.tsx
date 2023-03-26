@@ -1,6 +1,8 @@
 import CustomSelect from '../CustomSelect';
 import React, { FormEvent, Component, ReactNode, createRef, RefObject } from 'react';
 
+import { createRefs } from '../../helpers/helpers';
+
 import styles from './FormAddCard.module.scss';
 import { defaultFields, selectsData, langs, isGame } from './FormAddCardDefaultValues';
 import {
@@ -70,19 +72,11 @@ class FormAddCard extends Component<TFormProps, TFormState> {
 
   componentDidMount(): void {
     this.setState({
-      langs: this.createRefs<IRadio, HTMLInputElement>(langs),
-      isGame: this.createRefs<IRadio, HTMLInputElement>(isGame),
-      defaultFields: this.createRefs<IInputText, HTMLInputElement>(defaultFields),
-      selectsData: this.createRefs<ISelect, HTMLSelectElement>(selectsData),
+      langs: createRefs<IRadio, HTMLInputElement>(langs),
+      isGame: createRefs<IRadio, HTMLInputElement>(isGame),
+      defaultFields: createRefs<IInputText, HTMLInputElement>(defaultFields),
+      selectsData: createRefs<ISelect, HTMLSelectElement>(selectsData),
     });
-  }
-
-  private createRefs<T, U>(arrOfObj: T[]): (T & { refProp: RefObject<U> })[] {
-    return arrOfObj.map((obj) =>
-      Object.assign({}, obj, {
-        refProp: createRef<U>(),
-      })
-    );
   }
 
   private getRefFromArr = <T extends IInputTextWithRef | IIRadioWithRef | ISelectWithRef>(
