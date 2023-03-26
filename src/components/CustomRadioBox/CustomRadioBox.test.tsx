@@ -12,8 +12,8 @@ const dataArr = createRefs<IRadio, HTMLInputElement>([
   { id: 'fre', value: 'Le français' },
 ]);
 
-describe('<Header />', () => {
-  test('Header mounts properly', () => {
+describe('<CustomRadioBox />', () => {
+  test('CustomRadioBox mounts properly', () => {
     const wrapper = render(
       <MemoryRouter>
         <CustomRadioBox {...{ title: 'Language', name: 'lang', dataArr }} />
