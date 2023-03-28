@@ -1,46 +1,41 @@
 import { IPublisher } from '../../interfaces/cardsIterfaces';
-import React, { ReactNode, Component, RefObject } from 'react';
+import React, { RefObject } from 'react';
 
-interface CustomSelectProps {
+interface ICustomSelectProps {
   values: number[] | IPublisher[];
   id: string;
   title: string;
   refProp: RefObject<HTMLSelectElement>;
 }
 
-class CustomSelect extends Component<CustomSelectProps> {
-  render(): ReactNode {
-    const { values, id, title, refProp } = this.props;
+const CustomSelect = (props: ICustomSelectProps) => {
+  const { values, id, title, refProp } = props;
+  return (
+    <label htmlFor={id}>
+      {title}
 
-    return (
-      <>
-        <label htmlFor={id}>
-          {title}
-
-          <select id={id} ref={refProp} defaultValue="-1">
-            <option value="-1" disabled>
-              select the option
-            </option>
-            {values.map((value) => {
-              if (typeof value === 'number')
-                return (
-                  <option value={value.toString()} key={value.toString()}>
-                    {value.toString()}
-                  </option>
-                );
-              else {
-                return (
-                  <option value={value.id} key={value.id}>
-                    {value.title}
-                  </option>
-                );
-              }
-            })}
-          </select>
-        </label>
-      </>
-    );
-  }
-}
+      <select id={id} ref={refProp} defaultValue="-1">
+        <option value="-1" disabled>
+          select the option
+        </option>
+        {values.map((value) => {
+          if (typeof value === 'number')
+            return (
+              <option value={value.toString()} key={value.toString()}>
+                {value.toString()}
+              </option>
+            );
+          else {
+            return (
+              <option value={value.id} key={value.id}>
+                {value.title}
+              </option>
+            );
+          }
+        })}
+      </select>
+    </label>
+  );
+};
 
 export default CustomSelect;
