@@ -11,10 +11,10 @@ import styles from './HomePage.module.scss';
 import { IPageProps } from 'interfaces/pagesInterfaces';
 
 const HomePage = (props: IPageProps) => {
-  const { pageTitle, setCurrentPageTitle } = props;
+  const { pageTitle = 'untitled', setCurrentPageTitle } = props;
   const cardsData = getGamesData() as IGamesData;
 
-  if (setCurrentPageTitle) setCurrentPageTitle(String(pageTitle));
+  if (setCurrentPageTitle) setCurrentPageTitle(pageTitle);
 
   return (
     <main className={styles.main}>

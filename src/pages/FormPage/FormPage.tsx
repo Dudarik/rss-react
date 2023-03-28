@@ -1,5 +1,4 @@
-import Page from '../Page';
-import React, { ReactNode } from 'react';
+import React, { useState } from 'react';
 
 import styles from './FormPage.module.scss';
 import FormAddCard from '../../components/FormAddCard';
@@ -7,38 +6,31 @@ import CardsList from '../../components/CardsList';
 
 import { IGameData, IGamesData, IPublisher } from '../../interfaces/cardsIterfaces';
 import { getGamesData } from '../../helpers';
+import { IPageProps } from 'interfaces/pagesInterfaces';
 
-type TFormPageState = {
-  cardsData: IGamesData;
-};
+const FormPage = (props: IPageProps) => {
+  const { pageTitle = 'untitled', setCurrentPageTitle } = props;
 
-class FormPage extends Page {
-  state: TFormPageState = {
-    cardsData: {
-      publishers: getGamesData('publishers') as IPublisher[],
-      games: [],
-    },
-  };
+  if (setCurrentPageTitle) setCurrentPageTitle(pageTitle || 'untitled');
 
-  addNewCard = (newGame: IGameData) => {
-    const { games } = this.state.cardsData;
+  const [state, setState] = useState<IGamesData>({
+    publishers: getGamesData('publishers') as IPublisher[],
+    games: [],
+  });
+
+  const addNewCard = (newGame: IGameData) => {
+    const { games } = state;
     games.push(newGame);
-    this.setState({ games });
+    setState({ ...state, games });
   };
 
-  render(): ReactNode {
-    return (
-      <main className={styles.main}>
-        <h2>Add new card</h2>
-        <FormAddCard addNewCard={this.addNewCard} />
-        {this.state.cardsData.games.length ? (
-          <CardsList {...this.state.cardsData} />
-        ) : (
-          <h2>No cards added</h2>
-        )}
-      </main>
-    );
-  }
-}
+  return (
+    <main className={styles.main}>
+      <h2>Add new card</h2>
+      <FormAddCard addNewCard={addNewCard} />
+      {state.games.length ? <CardsList {...state} /> : <h2>No cards added</h2>}
+    </main>
+  );
+};
 
 export default FormPage;

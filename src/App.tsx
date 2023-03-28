@@ -4,7 +4,7 @@ import Footer from './components/Footer';
 import Router from './Router';
 
 const App = () => {
-  const [currentPageTitle, setCurrentPageTitle] = useState('');
+  const [currentPageTitle, setCurrentPageTitle] = useState<string | undefined>('');
 
   return (
     <>
