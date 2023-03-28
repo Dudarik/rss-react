@@ -1,25 +1,18 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Router from './Router';
 
-class App extends Component {
-  state = {
-    currentPageTitle: '',
-  };
+const App = () => {
+  const [currentPageTitle, setCurrentPageTitle] = useState('');
 
-  setCurrentPageTitle = (newTitle: string) => {
-    this.setState({ currentPageTitle: newTitle });
-  };
+  return (
+    <>
+      <Header pageTitle={currentPageTitle} />
+      <Router setCurrentPageTitle={setCurrentPageTitle} />
+      <Footer />
+    </>
+  );
+};
 
-  render() {
-    return (
-      <>
-        <Header pageTitle={this.state.currentPageTitle} />
-        <Router setCurrentPageTitle={this.setCurrentPageTitle} />
-        <Footer />
-      </>
-    );
-  }
-}
 export default App;
