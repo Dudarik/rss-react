@@ -11,7 +11,7 @@ import { IPageProps } from 'interfaces/pagesInterfaces';
 const FormPage = (props: IPageProps) => {
   const { pageTitle = 'untitled', setCurrentPageTitle } = props;
 
-  if (setCurrentPageTitle) setCurrentPageTitle(pageTitle || 'untitled');
+  if (setCurrentPageTitle) setCurrentPageTitle(pageTitle);
 
   const [state, setState] = useState<IGamesData>({
     publishers: getGamesData('publishers') as IPublisher[],
