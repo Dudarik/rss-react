@@ -1,6 +1,6 @@
 import { IGameData } from '../../interfaces/cardsIterfaces';
 
-import React, { Component, ReactNode } from 'react';
+import React from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -16,51 +16,49 @@ interface ICardProps extends IGameData {
   publisherTitle: string;
 }
 
-class Card extends Component<ICardProps> {
-  render(): ReactNode {
-    const {
-      id,
-      title,
-      releaseDate,
-      players,
-      scoreBGG,
-      scoreTesera,
-      age,
-      playingTime,
-      lang,
-      image,
-      game: isGame,
-      publisherImage,
-      publisherTitle,
-      blobImg,
-    } = this.props;
+const Card = (props: ICardProps) => {
+  const {
+    id,
+    title,
+    releaseDate,
+    players,
+    scoreBGG,
+    scoreTesera,
+    age,
+    playingTime,
+    lang,
+    image,
+    game: isGame,
+    publisherImage,
+    publisherTitle,
+    blobImg,
+  } = props;
 
-    return (
-      <li className={styles.card}>
-        <div className={styles.image}>
-          {blobImg ? (
-            <img src={image} alt={title} width="200" />
-          ) : (
-            <img src={PATH_TO_GAME_IMG + image} alt={title} width="200" />
-          )}
-        </div>
-        <Link to={`products/${id}`} className={styles.card_title}>
-          {title}
-        </Link>
-        <div>{isGame ? 'Игра' : 'Дполнение к игре'}</div>
+  return (
+    <li className={styles.card}>
+      <div className={styles.image}>
+        {blobImg ? (
+          <img src={image} alt={title} width="200" />
+        ) : (
+          <img src={PATH_TO_GAME_IMG + image} alt={title} width="200" />
+        )}
+      </div>
+      <Link to={`products/${id}`} className={styles.card_title}>
+        {title}
+      </Link>
+      <div>{isGame ? 'Игра' : 'Дполнение к игре'}</div>
 
-        <div className={styles.rating}>
-          BGG: <span>{scoreBGG}</span>
-          <pre> | </pre>Tesera: <span>{scoreTesera}</span>
-        </div>
+      <div className={styles.rating}>
+        BGG: <span>{scoreBGG}</span>
+        <pre> | </pre>Tesera: <span>{scoreTesera}</span>
+      </div>
 
-        <div className={styles.publisher}>
-          <img src={PATH_TO_PUBLISHER_IMG + publisherImage} alt={publisherTitle} />
-        </div>
-        <GameInfo {...{ releaseDate, players, age, playingTime, lang }} />
-      </li>
-    );
-  }
-}
+      <div className={styles.publisher}>
+        <img src={PATH_TO_PUBLISHER_IMG + publisherImage} alt={publisherTitle} />
+      </div>
+      <GameInfo {...{ releaseDate, players, age, playingTime, lang }} />
+    </li>
+  );
+};
 
 export default Card;
