@@ -1,48 +1,50 @@
-import React, { ChangeEvent, Component, ReactNode } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import styles from './SearchBar.module.scss';
 
 const LS_KEY = 'dudarik_rss_react_searchString';
 
-class SearchBar extends Component {
-  state = {
-    searchString: '',
-  };
+const SearchBar = () => {
+  const [searchString, setSearchString] = useState('');
 
-  handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
+  const searchStringRef = useRef<string>();
+
+  const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target;
 
-    this.setState({ [target.name]: target.value });
+    setSearchString(target.value);
   };
 
-  componentDidMount = () => {
+  useEffect(() => {
+    searchStringRef.current = searchString;
+  }, [searchString]);
+
+  useEffect(() => {
     const lsSearchString = localStorage.getItem(LS_KEY);
 
-    if (lsSearchString) this.setState({ searchString: lsSearchString });
-  };
+    if (lsSearchString) setSearchString(lsSearchString);
 
-  componentWillUnmount = () => {
-    localStorage.setItem(LS_KEY, this.state.searchString);
-  };
+    return () => {
+      localStorage.setItem(LS_KEY, String(searchStringRef.current));
+    };
+  }, []);
 
-  render(): ReactNode {
-    return (
-      <form className={styles.search_form}>
-        <input
-          type="search"
-          name="searchString"
-          id="searchString"
-          placeholder="input search string"
-          onChange={this.handleChangeInput}
-          value={this.state.searchString}
-          className={styles.search_input}
-        />
-        <button className={styles.search_button} title="search">
-          Search
-        </button>
-      </form>
-    );
-  }
-}
+  return (
+    <form className={styles.search_form}>
+      <input
+        type="search"
+        name="searchString"
+        id="searchString"
+        placeholder="input search string"
+        onChange={handleChangeInput}
+        value={searchString}
+        className={styles.search_input}
+      />
+      <button className={styles.search_button} title="search">
+        Search
+      </button>
+    </form>
+  );
+};
 
 export default SearchBar;
