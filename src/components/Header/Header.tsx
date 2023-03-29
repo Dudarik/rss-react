@@ -5,11 +5,11 @@ import MainNav from '../MainNav';
 
 import styles from './Header.module.scss';
 
-export interface IPageProps {
+export interface IHeadeeProps {
   pageTitle?: string;
 }
 
-const Header = (props: IPageProps) => {
+const Header = (props: IHeadeeProps) => {
   return (
     <header className={styles.header}>
       <Link to="/">
