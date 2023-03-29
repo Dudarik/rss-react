@@ -2,7 +2,7 @@ import { IGamesData } from '../../interfaces/cardsIterfaces';
 
 import CardsList from '../../components/CardsList';
 import SearchBar from '../../components/SearchBar';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { getGamesData } from '../../helpers';
 
@@ -14,7 +14,9 @@ const HomePage = (props: IPageProps) => {
   const { pageTitle = 'untitled', setCurrentPageTitle } = props;
   const cardsData = getGamesData() as IGamesData;
 
-  if (setCurrentPageTitle) setCurrentPageTitle(pageTitle);
+  useEffect(() => {
+    if (setCurrentPageTitle) setCurrentPageTitle(pageTitle);
+  }, [setCurrentPageTitle, pageTitle]);
 
   return (
     <main className={styles.main}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import styles from './FormPage.module.scss';
 import FormAddCard from '../../components/FormAddCard';
@@ -7,11 +7,14 @@ import CardsList from '../../components/CardsList';
 import { IGameData, IGamesData, IPublisher } from '../../interfaces/cardsIterfaces';
 import { getGamesData } from '../../helpers';
 import { IPageProps } from 'interfaces/pagesInterfaces';
+// import FormAddCardFn from '../../components/FormAddCard/FormAddCardFn';
 
 const FormPage = (props: IPageProps) => {
   const { pageTitle = 'untitled', setCurrentPageTitle } = props;
 
-  if (setCurrentPageTitle) setCurrentPageTitle(pageTitle);
+  useEffect(() => {
+    if (setCurrentPageTitle) setCurrentPageTitle(pageTitle);
+  }, [setCurrentPageTitle, pageTitle]);
 
   const [state, setState] = useState<IGamesData>({
     publishers: getGamesData('publishers') as IPublisher[],

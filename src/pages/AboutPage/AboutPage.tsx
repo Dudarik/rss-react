@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import styles from './AboutPage.module.scss';
 
@@ -7,7 +7,9 @@ import { IPageProps } from 'interfaces/pagesInterfaces';
 const AboutPage = (props: IPageProps) => {
   const { pageTitle = 'untitled', setCurrentPageTitle } = props;
 
-  if (setCurrentPageTitle) setCurrentPageTitle(String(pageTitle));
+  useEffect(() => {
+    if (setCurrentPageTitle) setCurrentPageTitle(pageTitle);
+  }, [setCurrentPageTitle, pageTitle]);
   return (
     <main className={styles.main}>
       <h2>
