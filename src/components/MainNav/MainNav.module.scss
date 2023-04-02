@@ -1,0 +1,14 @@
+.menu {
+  list-style-type: none;
+  display: flex;
+  gap: 1rem;
+
+  a {
+    font-weight: bold;
+    color: #e0f2f1;
+  }
+
+  .active {
+    border-bottom: 2px solid #a7ffeb;
+  }
+}
