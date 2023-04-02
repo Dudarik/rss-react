@@ -1,350 +1,168 @@
-import CustomSelect from '../CustomSelect';
-import React, { FormEvent, Component, ReactNode, createRef, RefObject } from 'react';
+import { IGameData } from '../../interfaces/cardsIterfaces';
 
-import { createRefs } from '../../helpers/helpers';
+import React, { useState } from 'react';
+
+import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
+
+import CustomRadioBox from '../CustomRadioBox';
+import CustomError from '../CustomError';
+import CustomSelect from '../CustomSelect';
+
+import { defaultFields, selectsData, langs, isGame } from './FormAddCardDefaultValues';
 
 import styles from './FormAddCard.module.scss';
-import { defaultFields, selectsData, langs, isGame } from './FormAddCardDefaultValues';
-import {
-  IInputText,
-  IInputTextWithRef,
-  IIRadioWithRef,
-  IRadio,
-  ISelect,
-  ISelectWithRef,
-} from '../../interfaces/formInterfaces';
-import CustomRadioBox from '../CustomRadioBox';
-import { IGameData } from '../../interfaces/cardsIterfaces';
-import CustomError from '../CustomError';
-import {
-  validateByPattern,
-  validateFirstCapitalize,
-  validateNotNull,
-  validateNumberBeetwinMinMax,
-  validateSelectNotNull,
-} from '../../helpers';
 
-type TFormState = {
-  defaultFields: IInputTextWithRef[];
-  langs: IIRadioWithRef[];
-  isGame: IIRadioWithRef[];
-  selectsData: ISelectWithRef[];
-
-  infoMessage: string;
-
-  dateRef: RefObject<HTMLInputElement>;
-  checkBoxRef: RefObject<HTMLInputElement>;
-  formRef: RefObject<HTMLFormElement>;
-  validator: Record<string, string>;
-};
 type TFormProps = {
   addNewCard: (newCard: IGameData) => void;
 };
 
-class FormAddCard extends Component<TFormProps, TFormState> {
-  state: TFormState = {
-    defaultFields: [],
-    langs: [],
-    isGame: [],
-    selectsData: [],
+const FormAddCard = (props: TFormProps) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FieldValues>({ reValidateMode: 'onSubmit' });
 
+  const [state, setState] = useState({
+    defaultFields,
+    langs,
+    isGame,
+    selectsData,
     infoMessage: '',
+  });
 
-    dateRef: createRef<HTMLInputElement>(),
-    checkBoxRef: createRef<HTMLInputElement>(),
-    formRef: createRef<HTMLFormElement>(),
-    validator: {
-      game_picture: '',
-      game_title: '',
-      game_duration: '',
-      bgg_rating: '',
-      tesera_rating: '',
-      release_date: '',
-      lang: '',
-      is_game: '',
-      is_correct: '',
-      select_publishers: '',
-      select_min_players: '',
-      select_max_players: '',
-      select_age: '',
-    },
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const {
+      game_title: title,
+      release_date: releaseDate,
+      select_publishers,
+      select_min_players,
+      select_max_players,
+      game_duration: playingTime,
+      select_age: age,
+      lang,
+      bgg_rating: scoreBGG,
+      tesera_rating: scoreTesera,
+      game_picture,
+      is_game: game,
+    } = data;
+
+    const image = game_picture.length ? window.URL.createObjectURL(game_picture[0]) : '';
+
+    const newCard = {
+      id: Date.now(),
+      title,
+      releaseDate,
+      publisher: parseInt(select_publishers),
+      players: `${select_min_players}-${select_max_players}`,
+      playingTime,
+      age,
+      lang,
+      scoreBGG,
+      scoreTesera,
+      image,
+      game: game === 'Game',
+      blobImg: true,
+    };
+
+    props.addNewCard(newCard);
+    setState({ ...state, infoMessage: `Game ${title} was added.` });
+
+    reset();
+
+    setTimeout(() => {
+      setState({ ...state, infoMessage: `` });
+    }, 3000);
   };
 
-  componentDidMount(): void {
-    this.setState({
-      langs: createRefs<IRadio, HTMLInputElement>(langs),
-      isGame: createRefs<IRadio, HTMLInputElement>(isGame),
-      defaultFields: createRefs<IInputText, HTMLInputElement>(defaultFields),
-      selectsData: createRefs<ISelect, HTMLSelectElement>(selectsData),
-    });
-  }
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.add_card_form}>
+      <div className={styles.top_section}>
+        <div className={styles.default_fields}>
+          {state.defaultFields.map((field) => {
+            const { fieldNameId, fieldTitle, fieldType, placeholder, validator } = field;
 
-  private getRefFromArr = <T extends IInputTextWithRef | IIRadioWithRef | ISelectWithRef>(
-    arrOfObj: T[]
-  ) => {
-    return arrOfObj.map((item) => item.refProp.current);
-  };
+            const currentFieldErrors = errors[fieldNameId];
 
-  private getFieldFromDefalutFields = (fieldTitle: string) => {
-    const fieldTitleReturn = this.state.defaultFields.find(
-      (item) => item.fieldNameId === fieldTitle
-    );
+            return (
+              <div className={styles.default_field} key={fieldNameId}>
+                <label htmlFor={fieldNameId} className={styles.default_label}>
+                  {fieldTitle}
 
-    if (!fieldTitleReturn) throw new Error(`Can't find ${fieldTitle} field`);
-
-    return fieldTitleReturn;
-  };
-
-  private getSelectFieldFromSelectFields = (fieldTitle: string) => {
-    const fieldTitleReturn = this.state.selectsData.find((item) => item.id === fieldTitle);
-
-    if (!fieldTitleReturn) throw new Error(`Can't find ${fieldTitle} field`);
-
-    return fieldTitleReturn;
-  };
-
-  private setValidationResultToState = async (validateItems: Record<string, string>) => {
-    await this.setState((pState) => ({
-      ...pState,
-      validator: { ...pState.validator, ...validateItems },
-    }));
-  };
-
-  private validatePicture = async () => {
-    const fieldPicture = this.getFieldFromDefalutFields('game_picture');
-
-    if (fieldPicture.refProp.current?.files?.length === 0)
-      this.setValidationResultToState({ game_picture: 'Choose file' });
-    else this.setValidationResultToState({ game_picture: '' });
-  };
-
-  private validateGameTitle = async () => {
-    const fieldGameTitle = this.getFieldFromDefalutFields('game_title');
-
-    let validateMessage = validateNotNull(fieldGameTitle.refProp, 'game title', 3);
-    validateMessage += validateFirstCapitalize(fieldGameTitle.refProp);
-
-    this.setValidationResultToState({ game_title: validateMessage });
-  };
-
-  private validateGameDuration = async () => {
-    const fieldGameTitle = this.getFieldFromDefalutFields('game_duration');
-
-    let validateMessage = validateNotNull(fieldGameTitle.refProp, 'game duration', 3);
-
-    validateMessage += validateByPattern(
-      fieldGameTitle.refProp,
-      `60-120 in minutes (^\d{1,2}-\d{1,3}$)`,
-      /^\d{1,2}-\d{1,3}$/
-    );
-
-    this.setValidationResultToState({ game_duration: validateMessage });
-  };
-
-  private validationRating = async () => {
-    const fieldBggRating = this.getFieldFromDefalutFields('bgg_rating');
-    const fieldTeseraRating = this.getFieldFromDefalutFields('tesera_rating');
-
-    this.setValidationResultToState({
-      bgg_rating: validateNumberBeetwinMinMax(fieldBggRating.refProp, 0, 10),
-      tesera_rating: validateNumberBeetwinMinMax(fieldTeseraRating.refProp, 0, 10),
-    });
-  };
-
-  private validationDate = async () => {
-    this.setValidationResultToState({
-      release_date: validateByPattern(
-        this.state.dateRef,
-        'Please input coorrect date in past present or future from 1900-2099 year',
-        /^((19|20)\d\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/
-      ),
-    });
-  };
-
-  private validationCheckBox = async () => {
-    this.setValidationResultToState({
-      is_correct: this.state.checkBoxRef.current?.checked
-        ? ''
-        : 'Please confirm that the data entered is correct',
-    });
-  };
-
-  private validationRadio = async () => {
-    const langField = this.getRefFromArr(this.state.langs) as HTMLInputElement[];
-    const isGameField = this.getRefFromArr(this.state.isGame) as HTMLInputElement[];
-
-    this.setValidationResultToState({
-      lang:
-        langField.find((item) => item.checked) === undefined
-          ? `Please select 1 of ${langField.length}`
-          : '',
-      is_game:
-        isGameField.find((item) => item.checked) === undefined
-          ? `Please select 1 of ${isGameField.length}`
-          : '',
-    });
-  };
-
-  private validationSelects = async () => {
-    this.state.selectsData.forEach((select) => {
-      this.setValidationResultToState({
-        [select.id]: validateSelectNotNull(select.refProp, select.title),
-      });
-    });
-  };
-
-  private handleSubmitForm = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    await this.validatePicture();
-    await this.validateGameTitle();
-    await this.validateGameDuration();
-    await this.validationRating();
-    await this.validationDate();
-    await this.validationCheckBox();
-    await this.validationRadio();
-    await this.validationSelects();
-
-    let valid_form = true;
-    const validatorValues = Object.values(this.state.validator);
-
-    for (let i = 0; i < validatorValues.length; i++) {
-      if (validatorValues[i].length) {
-        valid_form = false;
-        break;
-      }
-    }
-
-    if (valid_form) {
-      const path_img = this.getFieldFromDefalutFields('game_picture').refProp.current
-        ?.files as FileList;
-
-      const image = path_img ? window.URL.createObjectURL(path_img[0]) : '';
-
-      const min_players =
-        this.getSelectFieldFromSelectFields('select_min_players').refProp.current?.value;
-      const max_players =
-        this.getSelectFieldFromSelectFields('select_max_players').refProp.current?.value;
-      const age = parseInt(
-        this.getSelectFieldFromSelectFields('select_age').refProp.current?.value as string
-      );
-
-      const publisher = parseInt(
-        this.getSelectFieldFromSelectFields('select_publishers').refProp.current?.value as string
-      );
-
-      const langField = this.getRefFromArr(this.state.langs) as HTMLInputElement[];
-      const isGameField = this.getRefFromArr(this.state.isGame) as HTMLInputElement[];
-
-      const lang = langField.find((item) => item.checked)?.value as string;
-      const game = (isGameField.find((item) => item.checked)?.value as string) === 'Game';
-      const title = this.getFieldFromDefalutFields('game_title').refProp.current?.value as string;
-
-      const newCard = {
-        id: Date.now(),
-        title,
-        releaseDate: this.state.dateRef.current?.value as string,
-        publisher,
-        players: `${min_players}-${max_players}`,
-        playingTime: this.getFieldFromDefalutFields('game_duration').refProp.current
-          ?.value as string,
-        age,
-        lang,
-        scoreBGG: parseFloat(
-          this.getFieldFromDefalutFields('bgg_rating').refProp.current?.value as string
-        ),
-        scoreTesera: parseFloat(
-          this.getFieldFromDefalutFields('tesera_rating').refProp.current?.value as string
-        ),
-        image,
-        game,
-        blobImg: true,
-      };
-
-      this.props.addNewCard(newCard);
-
-      this.setState({ infoMessage: `Game ${title} was added.` });
-      if (this.state.formRef.current) this.state.formRef.current.reset();
-      setTimeout(() => {
-        this.setState({ infoMessage: `` });
-      }, 3000);
-    }
-  };
-
-  render(): ReactNode {
-    return (
-      <form
-        onSubmit={this.handleSubmitForm}
-        className={styles.add_card_form}
-        ref={this.state.formRef}
-      >
-        <div className={styles.top_section}>
-          <div className={styles.default_fields}>
-            {this.state.defaultFields.map((field) => {
-              const { fieldNameId, fieldTitle, fieldType, placeholder, refProp } = field;
-
-              return (
-                <div className={styles.default_field} key={fieldNameId}>
-                  <label htmlFor={fieldNameId} className={styles.default_label}>
-                    {fieldTitle}
-                    <input
-                      type={fieldType}
-                      id={fieldNameId}
-                      name={fieldNameId}
-                      ref={refProp}
-                      placeholder={placeholder}
-                    />
-                  </label>
-                  <CustomError message={this.state.validator[fieldNameId]} />
-                </div>
-              );
-            })}
-          </div>
-
-          <div className={styles.select_fields}>
-            {this.state.selectsData.map((item) => (
-              <div key={item.id} className={styles.select_field}>
-                <CustomSelect {...item} />
-                <CustomError message={this.state.validator[item.id]} />
+                  <input
+                    {...register(fieldNameId, validator)}
+                    type={fieldType}
+                    id={fieldNameId}
+                    name={fieldNameId}
+                    placeholder={placeholder}
+                  />
+                </label>
+                <CustomError
+                  message={currentFieldErrors ? currentFieldErrors.message?.toString() : ''}
+                />
               </div>
-            ))}
-          </div>
-
-          <div className={styles.radio_fields}>
-            <div className={styles.radio_section}>
-              <CustomRadioBox
-                {...{ title: 'is Game', name: 'is_game', dataArr: this.state.isGame }}
-              />
-              <CustomError message={this.state.validator['is_game']} />
-            </div>
-            <div className={styles.radio_section}>
-              <CustomRadioBox {...{ title: 'Language', name: 'lang', dataArr: this.state.langs }} />
-              <CustomError message={this.state.validator['lang']} />
-            </div>
-          </div>
+            );
+          })}
         </div>
 
-        <div className={styles.release_date}>
-          <label htmlFor="release_date">
-            Relise date:
-            <input type="date" name="release_date" id="release_date" ref={this.state.dateRef} />
-          </label>
-          <CustomError message={this.state.validator['release_date']} />
+        <div className={styles.select_fields}>
+          {state.selectsData.map((item) => (
+            <div key={item.id} className={styles.select_field}>
+              <CustomSelect {...{ ...item, register }} />
+              <CustomError message={errors[item.id]?.message?.toString()} />
+            </div>
+          ))}
         </div>
+        <div className={styles.radio_fields}>
+          <div className={styles.radio_section}>
+            <CustomRadioBox
+              {...{ title: 'is Game', name: 'is_game', dataArr: state.isGame, register }}
+            />
+            <CustomError message={errors['is_game'] && 'Please choose one'} />
+          </div>
+          <div className={styles.radio_section}>
+            <CustomRadioBox
+              {...{ title: 'Language', name: 'lang', dataArr: state.langs, register }}
+            />
+            <CustomError message={errors['lang'] && 'Please choose one'} />
+          </div>
+        </div>
+      </div>
 
-        <label htmlFor="is_correct" className={styles.is_correct}>
-          Data correct:
-          <input type="checkbox" name="is_correct" id="is_correct" ref={this.state.checkBoxRef} />
-          <CustomError message={this.state.validator['is_correct']} />
+      <div className={styles.release_date}>
+        <label htmlFor="release_date">
+          Relise date:
+          <input
+            type="date"
+            id="release_date"
+            {...register('release_date', {
+              required: 'Please input coorrect date in past present or future from 1900-2099 year',
+              pattern: {
+                value: /^((19|20)\d\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/,
+                message: 'Please input coorrect date in past present or future from 1900-2099 year',
+              },
+            })}
+          />
         </label>
-        {this.state.infoMessage.length > 0 && (
-          <div className={styles.info_message}>{this.state.infoMessage}</div>
-        )}
-        <button type="submit" className={styles.add_button}>
-          submit
-        </button>
-      </form>
-    );
-  }
-}
+        <CustomError
+          message={errors['release_date'] && errors['release_date'].message?.toString()}
+        />
+      </div>
+
+      <label htmlFor="is_correct" className={styles.is_correct}>
+        Data correct:
+        <input type="checkbox" id="is_correct" {...register('is_correct', { required: true })} />
+        <CustomError message={errors['is_correct'] && 'Please check if data correct'} />
+      </label>
+      {state.infoMessage.length > 0 && (
+        <div className={styles.info_message}>{state.infoMessage}</div>
+      )}
+      <button type="submit" className={styles.add_button}>
+        submit
+      </button>
+    </form>
+  );
+};
 
 export default FormAddCard;

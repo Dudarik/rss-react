@@ -1,4 +1,5 @@
 import { RefObject } from 'react';
+import { FieldValues, UseFormRegister } from 'react-hook-form';
 import { IPublisher } from './cardsIterfaces';
 
 export interface IInputText {
@@ -32,5 +33,6 @@ export interface ISelectWithRef extends ISelect {
 export interface IRadioBox {
   title: string;
   name: string;
-  dataArr: IIRadioWithRef[];
+  dataArr: IRadio[];
+  register: UseFormRegister<FieldValues>;
 }

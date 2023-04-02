@@ -10,27 +10,67 @@ export const defaultFields = [
     fieldNameId: 'game_picture',
     fieldTitle: 'Add picture',
     fieldType: FILD_TYPE_FILE,
+    validator: {
+      required: 'Choose file',
+    },
   },
   {
     fieldNameId: 'game_title',
     fieldTitle: 'Game title',
     fieldType: FILD_TYPE_TEXT,
+    validator: {
+      required: `Please input Game title, min 3 symbols.`,
+      minLength: 3,
+      validate: {
+        firstCapitalize: (v: string) =>
+          v[0] === v[0].toLocaleUpperCase() || 'The first letter must be a capital letter.',
+      },
+    },
   },
   {
     fieldNameId: 'game_duration',
     fieldTitle: 'Game duration in minutes',
     placeholder: 'example: 60-90',
     fieldType: FILD_TYPE_TEXT,
+    validator: {
+      required: `Please input Game duration`,
+      pattern: {
+        value: /^\d{1,2}-\d{1,3}$/,
+        message: 'Must be in pattern "30-90"',
+      },
+    },
   },
   {
     fieldNameId: 'bgg_rating',
     fieldTitle: 'BGG rating',
     fieldType: FILD_TYPE_NUMBER,
+    validator: {
+      required: `Please input number 1 to 10`,
+      min: {
+        value: 1,
+        message: 'Min value 1',
+      },
+      max: {
+        value: 10,
+        message: 'Max value 10',
+      },
+    },
   },
   {
     fieldNameId: 'tesera_rating',
     fieldTitle: 'Tesera rating',
     fieldType: FILD_TYPE_NUMBER,
+    validator: {
+      required: `Please input number 1 to 10`,
+      min: {
+        value: 1,
+        message: 'Min value 0',
+      },
+      max: {
+        value: 10,
+        message: 'Max value 10',
+      },
+    },
   },
 ];
 

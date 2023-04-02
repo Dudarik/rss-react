@@ -1,4 +1,4 @@
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -14,9 +14,10 @@ const dataArr = createRefs<IRadio, HTMLInputElement>([
 
 describe('<CustomRadioBox />', () => {
   test('CustomRadioBox mounts properly', () => {
+    const register = vi.fn();
     const wrapper = render(
       <MemoryRouter>
-        <CustomRadioBox {...{ title: 'Language', name: 'lang', dataArr }} />
+        <CustomRadioBox {...{ title: 'Language', name: 'lang', dataArr, register }} />
       </MemoryRouter>
     );
     expect(wrapper).toBeTruthy();

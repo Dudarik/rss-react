@@ -7,7 +7,6 @@ import CardsList from '../../components/CardsList';
 import { IGameData, IGamesData, IPublisher } from '../../interfaces/cardsIterfaces';
 import { getGamesData } from '../../helpers';
 import { IPageProps } from 'interfaces/pagesInterfaces';
-// import FormAddCardFn from '../../components/FormAddCard/FormAddCardFn';
 
 const FormPage = (props: IPageProps) => {
   const { pageTitle = 'untitled', setCurrentPageTitle } = props;

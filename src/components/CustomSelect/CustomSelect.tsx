@@ -1,20 +1,31 @@
 import { IPublisher } from '../../interfaces/cardsIterfaces';
-import React, { RefObject } from 'react';
+import React from 'react';
+import { FieldValues, UseFormRegister } from 'react-hook-form';
 
 interface ICustomSelectProps {
   values: number[] | IPublisher[];
   id: string;
   title: string;
-  refProp: RefObject<HTMLSelectElement>;
+  register: UseFormRegister<FieldValues>;
 }
 
 const CustomSelect = (props: ICustomSelectProps) => {
-  const { values, id, title, refProp } = props;
+  const { values, id, title, register } = props;
   return (
     <label htmlFor={id}>
       {title}
 
-      <select id={id} ref={refProp} defaultValue="-1">
+      <select
+        id={id}
+        defaultValue="-1"
+        {...register(id, {
+          required: `Please choose value of ${title}`,
+          min: {
+            value: 0,
+            message: 'Please choose value',
+          },
+        })}
+      >
         <option value="-1" disabled>
           select the option
         </option>
