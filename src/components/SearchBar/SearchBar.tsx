@@ -1,13 +1,18 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 
 import styles from './SearchBar.module.scss';
 
-const LS_KEY = 'dudarik_rss_react_searchString';
+interface ISearchProps {
+  searchString: string;
+  setSearchString: React.Dispatch<React.SetStateAction<string>>;
+  handlerSubmitBtnClick: (event: FormEvent) => void;
+}
 
-const SearchBar = () => {
-  const [searchString, setSearchString] = useState('');
+const SearchBar = (props: ISearchProps) => {
+  const { searchString, setSearchString, handlerSubmitBtnClick } = props;
+  // const [searchString, setSearchString] = useState('');
 
-  const searchStringRef = useRef<string>();
+  // const searchStringRef = useRef<string>();
 
   const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target;
@@ -15,22 +20,22 @@ const SearchBar = () => {
     setSearchString(target.value);
   };
 
-  useEffect(() => {
-    searchStringRef.current = searchString;
-  }, [searchString]);
+  // useEffect(() => {
+  //   searchStringRef.current = searchString;
+  // }, [searchString]);
 
-  useEffect(() => {
-    const lsSearchString = localStorage.getItem(LS_KEY);
+  // useEffect(() => {
+  //   const lsSearchString = localStorage.getItem(LS_KEY);
 
-    if (lsSearchString) setSearchString(lsSearchString);
+  //   if (lsSearchString) setSearchString(lsSearchString);
 
-    return () => {
-      localStorage.setItem(LS_KEY, String(searchStringRef.current));
-    };
-  }, []);
+  //   return () => {
+  //     localStorage.setItem(LS_KEY, String(searchStringRef.current));
+  //   };
+  // }, []);
 
   return (
-    <form className={styles.search_form}>
+    <form className={styles.search_form} onSubmit={handlerSubmitBtnClick}>
       <input
         type="search"
         name="searchString"
@@ -40,8 +45,8 @@ const SearchBar = () => {
         value={searchString}
         className={styles.search_input}
       />
-      <button className={styles.search_button} title="search">
-        Search
+      <button type="submit" className={styles.search_button} title="search">
+        Submit
       </button>
     </form>
   );

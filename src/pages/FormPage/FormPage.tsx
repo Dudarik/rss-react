@@ -1,24 +1,34 @@
+import { IGameData, IGamesData, IPublisher } from '../../interfaces/cardsIterfaces';
+import { IPageProps } from '../../interfaces/pagesInterfaces';
+
 import React, { useEffect, useState } from 'react';
 
-import styles from './FormPage.module.scss';
 import FormAddCard from '../../components/FormAddCard';
 import CardsList from '../../components/CardsList';
 
-import { IGameData, IGamesData, IPublisher } from '../../interfaces/cardsIterfaces';
 import { getGamesData } from '../../helpers';
-import { IPageProps } from 'interfaces/pagesInterfaces';
+
+import styles from './FormPage.module.scss';
 
 const FormPage = (props: IPageProps) => {
   const { pageTitle = 'untitled', setCurrentPageTitle } = props;
+  const [state, setState] = useState<IGamesData>({
+    publishers: [],
+    games: [],
+  });
+
+  useEffect(() => {
+    const fetchPublishers = async () => {
+      const publishers = (await getGamesData('publishers')) as IPublisher[];
+      setState({ ...state, publishers });
+    };
+
+    fetchPublishers();
+  }, []);
 
   useEffect(() => {
     if (setCurrentPageTitle) setCurrentPageTitle(pageTitle);
   }, [setCurrentPageTitle, pageTitle]);
-
-  const [state, setState] = useState<IGamesData>({
-    publishers: getGamesData('publishers') as IPublisher[],
-    games: [],
-  });
 
   const addNewCard = (newGame: IGameData) => {
     const { games } = state;

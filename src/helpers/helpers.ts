@@ -1,5 +1,5 @@
 import { IGameData, IGamesData, IPublisher } from '../interfaces/cardsIterfaces';
-import db from '../db/db.json';
+
 import { createRef, RefObject } from 'react';
 
 type TReturnGamesData = IGamesData | IGameData[] | IPublisher[] | undefined;
@@ -24,25 +24,37 @@ export const fetchData = async (endpoint: string, queryParams?: string): Promise
   }
 };
 
-export const fetchGames = async (queryParams?: string): Promise<IGameData[]> => {
+export const getGame = async (id: number, queryParams?: string): Promise<IGameData> => {
+  const response = await fetchData(`${API_GAMES_URL}/${id}`, queryParams);
+
+  return (await response.json()) as IGameData;
+};
+
+export const getGames = async (queryParams?: string): Promise<IGameData[]> => {
   const response = await fetchData(API_GAMES_URL, queryParams);
 
   return (await response.json()) as IGameData[];
 };
 
-export const fetchPublishers = async (queryParams?: string): Promise<IPublisher[]> => {
+export const getPublishers = async (queryParams?: string): Promise<IPublisher[]> => {
   const response = await fetchData(API_PUBLISHERS_URL, queryParams);
 
   return (await response.json()) as IPublisher[];
 };
 
-export const getGamesData = (key?: keyof IGamesData): TReturnGamesData => {
-  const data = db as IGamesData;
-  if (data) {
-    if (key) return data[key];
-    return data;
+export const getGamesData = async (key?: keyof IGamesData): Promise<TReturnGamesData> => {
+  switch (key) {
+    case 'games':
+      return await getGames();
+    case 'publishers':
+      return await getPublishers();
+
+    default:
+      const publishers = await getPublishers();
+      const games = await getGames();
+
+      return { publishers, games };
   }
-  return undefined;
 };
 
 export const createRefs = <T, U>(arrOfObj: T[]): (T & { refProp: RefObject<U> })[] => {

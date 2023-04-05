@@ -1,6 +1,3 @@
-import { IPublisher } from '../../interfaces/cardsIterfaces';
-import { getGamesData } from '../../helpers';
-
 export const FILD_TYPE_FILE = 'file';
 export const FILD_TYPE_TEXT = 'text';
 export const FILD_TYPE_NUMBER = 'number';
@@ -75,7 +72,28 @@ export const defaultFields = [
 ];
 
 const publishers = {
-  values: getGamesData('publishers') as IPublisher[],
+  values: [
+    {
+      id: 0,
+      title: 'Лавка игр',
+      img: 'lavkagames.webp',
+    },
+    {
+      id: 1,
+      title: 'Gaga games',
+      img: 'gagagames.webp',
+    },
+    {
+      id: 2,
+      title: 'Hobby world',
+      img: 'hobbyworld.webp',
+    },
+    {
+      id: 3,
+      title: 'Crowd games',
+      img: 'crowdgames.webp',
+    },
+  ],
   id: 'select_publishers',
   title: 'Choose publisher',
 };
