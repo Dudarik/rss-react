@@ -1,8 +1,6 @@
-import { IGameData, IGamesData, IPublisher } from '../interfaces/cardsIterfaces';
+import { IGameData, IPublisher } from '../interfaces/cardsIterfaces';
 
 import { createRef, RefObject } from 'react';
-
-type TReturnGamesData = IGamesData | IGameData[] | IPublisher[] | undefined;
 
 const API_URL = 'http://178.21.11.247:3000';
 const API_GAMES_URL = `${API_URL}/games`;
@@ -40,21 +38,6 @@ export const getPublishers = async (queryParams?: string): Promise<IPublisher[]>
   const response = await fetchData(API_PUBLISHERS_URL, queryParams);
 
   return (await response.json()) as IPublisher[];
-};
-
-export const getGamesData = async (key?: keyof IGamesData): Promise<TReturnGamesData> => {
-  switch (key) {
-    case 'games':
-      return await getGames();
-    case 'publishers':
-      return await getPublishers();
-
-    default:
-      const publishers = await getPublishers();
-      const games = await getGames();
-
-      return { publishers, games };
-  }
 };
 
 export const createRefs = <T, U>(arrOfObj: T[]): (T & { refProp: RefObject<U> })[] => {

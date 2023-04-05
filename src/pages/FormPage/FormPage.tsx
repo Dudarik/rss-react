@@ -1,4 +1,4 @@
-import { IGameData, IGamesData, IPublisher } from '../../interfaces/cardsIterfaces';
+import { IGameData, IGamesData } from '../../interfaces/cardsIterfaces';
 import { IPageProps } from '../../interfaces/pagesInterfaces';
 
 import React, { useEffect, useState } from 'react';
@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import FormAddCard from '../../components/FormAddCard';
 import CardsList from '../../components/CardsList';
 
-import { getGamesData } from '../../helpers';
+import { getPublishers } from '../../helpers';
 
 import styles from './FormPage.module.scss';
 
@@ -19,7 +19,7 @@ const FormPage = (props: IPageProps) => {
 
   useEffect(() => {
     const fetchPublishers = async () => {
-      const publishers = (await getGamesData('publishers')) as IPublisher[];
+      const publishers = await getPublishers();
       const games: IGameData[] = [];
       setState({ games, publishers });
     };

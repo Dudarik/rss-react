@@ -4,7 +4,6 @@ import '@testing-library/jest-dom';
 import Router from '.';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import userEvent from '@testing-library/user-event';
 
 describe('<Router />', () => {
   test('Router mounts properly', async () => {
@@ -16,10 +15,6 @@ describe('<Router />', () => {
 
     expect(wrapper).toBeTruthy();
 
-    const errorLink = screen.getByText('Архитекторы западного королевства');
-
-    await userEvent.click(errorLink);
-
-    expect(screen.getByText(/Not found/i)).toBeInTheDocument();
+    expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
   });
 });

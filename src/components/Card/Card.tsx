@@ -43,7 +43,7 @@ const Card = (props: ICardProps) => {
           <img src={PATH_TO_GAME_IMG + image} alt={title} width="200" />
         )}
       </div>
-      <Link to={`products/${id}`} className={styles.card_title}>
+      <Link to={`games/${id}`} className={styles.card_title}>
         {title}
       </Link>
       <div>{isGame ? 'Игра' : 'Дполнение к игре'}</div>
