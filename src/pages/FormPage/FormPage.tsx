@@ -20,7 +20,8 @@ const FormPage = (props: IPageProps) => {
   useEffect(() => {
     const fetchPublishers = async () => {
       const publishers = (await getGamesData('publishers')) as IPublisher[];
-      setState({ ...state, publishers });
+      const games: IGameData[] = [];
+      setState({ games, publishers });
     };
 
     fetchPublishers();

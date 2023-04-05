@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, FormEvent } from 'react';
 
 import styles from './SearchBar.module.scss';
 
@@ -10,29 +10,12 @@ interface ISearchProps {
 
 const SearchBar = (props: ISearchProps) => {
   const { searchString, setSearchString, handlerSubmitBtnClick } = props;
-  // const [searchString, setSearchString] = useState('');
-
-  // const searchStringRef = useRef<string>();
 
   const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target;
 
     setSearchString(target.value);
   };
-
-  // useEffect(() => {
-  //   searchStringRef.current = searchString;
-  // }, [searchString]);
-
-  // useEffect(() => {
-  //   const lsSearchString = localStorage.getItem(LS_KEY);
-
-  //   if (lsSearchString) setSearchString(lsSearchString);
-
-  //   return () => {
-  //     localStorage.setItem(LS_KEY, String(searchStringRef.current));
-  //   };
-  // }, []);
 
   return (
     <form className={styles.search_form} onSubmit={handlerSubmitBtnClick}>
