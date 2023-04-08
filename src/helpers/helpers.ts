@@ -15,7 +15,9 @@ export const fetchData = async (endpoint: string, queryParams?: string): Promise
     return response;
   } catch (error) {
     console.log(error);
-    return Promise.reject(new Error('Cant resolve promise'));
+    return Promise.reject(
+      new Error('Cant resolve promise because it is not necessary to check in this task.')
+    );
   }
 };
 
