@@ -1,10 +1,8 @@
-import { ICardProps, IGameData } from '../../interfaces/cardsIterfaces';
+import { ICardProps } from '../../interfaces/cardsIterfaces';
 
 import React, { MouseEvent } from 'react';
 
 import { Link } from 'react-router-dom';
-
-// import GameInfo from '../GameInfo';
 
 import styles from './Card.module.scss';
 
@@ -15,13 +13,10 @@ const Card = (props: ICardProps) => {
   const {
     id,
     title,
-    // releaseDate,
-    // players,
+
     scoreBGG,
     scoreTesera,
-    // age,
-    // playingTime,
-    // lang,
+
     image,
     game: isGame,
     publisherImage,
@@ -57,7 +52,6 @@ const Card = (props: ICardProps) => {
       <div className={styles.publisher}>
         <img src={PATH_TO_PUBLISHER_IMG + publisherImage} alt={publisherTitle} />
       </div>
-      {/* <GameInfo {...{ releaseDate, players, age, playingTime, lang }} /> */}
     </li>
   );
 };
