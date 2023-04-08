@@ -1,4 +1,4 @@
-import { describe, test, expect, vi } from 'vitest';
+import { describe, test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 
@@ -12,7 +12,7 @@ const gameInfoData = {
   lang: 'Russian',
 };
 
-describe('<Header />', () => {
+describe('<GameInfo />', () => {
   test('Header mounts properly', () => {
     const wrapper = render(<GameInfo {...gameInfoData} />);
     expect(wrapper).toBeTruthy();

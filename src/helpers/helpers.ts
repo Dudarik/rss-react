@@ -1,10 +1,7 @@
 import { IGameData, IPublisher } from '../interfaces/cardsIterfaces';
 
 import { createRef, RefObject } from 'react';
-
-const API_URL = 'http://178.21.11.247:3000';
-const API_GAMES_URL = `${API_URL}/games`;
-const API_PUBLISHERS_URL = `${API_URL}/publishers`;
+import { API_GAMES_URL, API_PUBLISHERS_URL } from '../config/API_paths';
 
 export const fetchData = async (endpoint: string, queryParams?: string): Promise<Response> => {
   let queryUrl = endpoint;

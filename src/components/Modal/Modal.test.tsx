@@ -8,7 +8,7 @@ const currentGameId = 2;
 const isModalOpen = true;
 const setIsModalOpen = vi.fn();
 
-describe('<Header />', () => {
+describe('<Modal />', () => {
   test('Header mounts properly', () => {
     const wrapper = render(<Modal {...{ currentGameId, isModalOpen, setIsModalOpen }} />);
     expect(wrapper).toBeTruthy();
