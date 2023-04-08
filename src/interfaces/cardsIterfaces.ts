@@ -24,3 +24,9 @@ export interface IGamesData {
   publishers: IPublisher[];
   games: IGameData[];
 }
+
+export interface ICardProps extends IGameData {
+  publisherImage: string;
+  publisherTitle: string;
+  openModal?: (gameId: number) => void;
+}

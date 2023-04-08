@@ -1,39 +1,40 @@
-import { IGameData } from '../../interfaces/cardsIterfaces';
+import { ICardProps, IGameData } from '../../interfaces/cardsIterfaces';
 
-import React from 'react';
+import React, { MouseEvent } from 'react';
 
 import { Link } from 'react-router-dom';
 
-import GameInfo from '../GameInfo';
+// import GameInfo from '../GameInfo';
 
 import styles from './Card.module.scss';
 
 const PATH_TO_GAME_IMG = 'assets/images/games_webp/';
 const PATH_TO_PUBLISHER_IMG = 'assets/images/publishers_webp/';
 
-interface ICardProps extends IGameData {
-  publisherImage: string;
-  publisherTitle: string;
-}
-
 const Card = (props: ICardProps) => {
   const {
     id,
     title,
-    releaseDate,
-    players,
+    // releaseDate,
+    // players,
     scoreBGG,
     scoreTesera,
-    age,
-    playingTime,
-    lang,
+    // age,
+    // playingTime,
+    // lang,
     image,
     game: isGame,
     publisherImage,
     publisherTitle,
     blobImg,
+    openModal,
   } = props;
 
+  const handlerLinkOnClick = (event: MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (openModal) openModal(id);
+  };
   return (
     <li className={styles.card}>
       <div className={styles.image}>
@@ -43,7 +44,7 @@ const Card = (props: ICardProps) => {
           <img src={PATH_TO_GAME_IMG + image} alt={title} width="200" />
         )}
       </div>
-      <Link to={`games/${id}`} className={styles.card_title}>
+      <Link to={`games/${id}`} className={styles.card_title} onClick={handlerLinkOnClick}>
         {title}
       </Link>
       <div>{isGame ? 'Игра' : 'Дполнение к игре'}</div>
@@ -56,7 +57,7 @@ const Card = (props: ICardProps) => {
       <div className={styles.publisher}>
         <img src={PATH_TO_PUBLISHER_IMG + publisherImage} alt={publisherTitle} />
       </div>
-      <GameInfo {...{ releaseDate, players, age, playingTime, lang }} />
+      {/* <GameInfo {...{ releaseDate, players, age, playingTime, lang }} /> */}
     </li>
   );
 };
