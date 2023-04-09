@@ -7,9 +7,7 @@ import { Link } from 'react-router-dom';
 import GameInfo from '../GameInfo';
 
 import styles from './Card.module.scss';
-
-const PATH_TO_GAME_IMG = 'assets/images/games_webp/';
-const PATH_TO_PUBLISHER_IMG = 'assets/images/publishers_webp/';
+import { PATH_TO_GAME_IMG, PATH_TO_PUBLISHER_IMG } from '../../config/img_paths';
 
 const Card = (props: ICardProps) => {
   const {
