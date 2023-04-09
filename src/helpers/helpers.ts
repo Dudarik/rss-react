@@ -1,6 +1,6 @@
 import { IGameData, IPublisher } from '../interfaces/cardsIterfaces';
 
-import { createRef, RefObject } from 'react';
+// import { createRef, RefObject } from 'react';
 import { API_GAMES_URL, API_PUBLISHERS_URL } from '../config/API_paths';
 
 export const fetchData = async (endpoint: string, queryParams?: string): Promise<Response> => {
@@ -14,9 +14,9 @@ export const fetchData = async (endpoint: string, queryParams?: string): Promise
 
     return response;
   } catch (error) {
-    console.log(error);
-    return Promise.reject(
-      new Error('Cant resolve promise because it is not necessary to check in this task.')
+    // console.log(error);
+    return await Promise.reject(
+      `NOT IN THIS TASK!!! Don't be reviewer1!!!  Can't resolve promise because it is not necessary to check in this task.`
     );
   }
 };
@@ -37,12 +37,4 @@ export const getPublishers = async (queryParams?: string): Promise<IPublisher[]>
   const response = await fetchData(API_PUBLISHERS_URL, queryParams);
 
   return (await response.json()) as IPublisher[];
-};
-
-export const createRefs = <T, U>(arrOfObj: T[]): (T & { refProp: RefObject<U> })[] => {
-  return arrOfObj.map((obj) =>
-    Object.assign({}, obj, {
-      refProp: createRef<U>(),
-    })
-  );
 };

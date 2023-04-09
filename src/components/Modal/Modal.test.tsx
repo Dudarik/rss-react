@@ -4,16 +4,22 @@ import React from 'react';
 
 import Modal from '.';
 
-const currentGameId = 2;
+const currentGameId = 7;
 const isModalOpen = true;
 const setIsModalOpen = vi.fn();
 
-describe('<Modal />', () => {
-  test('Header mounts properly', () => {
+describe('<Modal /> + mock', () => {
+  test('Modal mounts properly', async () => {
     const wrapper = render(<Modal {...{ currentGameId, isModalOpen, setIsModalOpen }} />);
+
     expect(wrapper).toBeTruthy();
 
-    const text = screen.getByText(/Loading\.\.\./i);
-    expect(text).toBeInTheDocument();
+    expect(screen.getByText(/Loading\.\.\./i)).toBeInTheDocument();
+  });
+
+  test('Modal mounts properly and render mock', async () => {
+    render(<Modal {...{ currentGameId, isModalOpen, setIsModalOpen }} />);
+
+    expect(await screen.findByText('Dune: Imperium - Rise of Ix')).toBeInTheDocument();
   });
 });

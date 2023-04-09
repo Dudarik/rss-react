@@ -17,3 +17,15 @@ describe('<HomePage />', () => {
     expect(text.textContent).toBeTruthy();
   });
 });
+
+describe('mock test <HomePage />', () => {
+  test('HomePage mounts properly with mock data', async () => {
+    render(
+      <MemoryRouter>
+        <HomePage pageTitle="Home" />
+      </MemoryRouter>
+    );
+
+    expect(await screen.findByText('Dune: Imperium - Rise of Ix')).toBeInTheDocument();
+  });
+});

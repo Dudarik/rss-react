@@ -3,14 +3,12 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import CustomRadioBox from '.';
-import { createRefs } from '../../helpers';
-import { IRadio } from '../../interfaces/formInterfaces';
 
-const dataArr = createRefs<IRadio, HTMLInputElement>([
+const dataArr = [
   { id: 'rus', value: 'Русский' },
   { id: 'eng', value: 'English' },
   { id: 'fre', value: 'Le français' },
-]);
+];
 
 describe('<CustomRadioBox />', () => {
   test('CustomRadioBox mounts properly', () => {

@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from 'vitest';
-import { render } from '@testing-library/react';
-// import userEvent from '@testing-library/user-event';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import SearchBar from '.';
 import React from 'react';
@@ -16,16 +16,4 @@ describe('<SearchBar />', () => {
     );
     expect(wrapper).toBeTruthy();
   });
-
-  // test('SearchBar handler onChange', async () => {
-  //   render(<SearchBar {...{ searchString, setSearchString, handlerSubmitBtnClick }} />);
-
-  //   const inputString = 'Hello world';
-
-  //   const inputField = screen.getByPlaceholderText('input search string');
-
-  //   await userEvent.type(inputField, inputString);
-
-  //   expect(inputField).toHaveValue(inputString);
-  // });
 });

@@ -43,6 +43,7 @@
     "husky": "^7.0.4",
     "jsdom": "^21.1.0",
     "lint-staged": "^12.5.0",
+    "msw": "^1.2.1",
     "prettier": "^2.8.4",
     "sass": "^1.58.3",
     "typescript": "^4.9.5",
