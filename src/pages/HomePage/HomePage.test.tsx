@@ -13,7 +13,7 @@ describe('<HomePage />', () => {
     );
     expect(wrapper).toBeTruthy();
 
-    const text = screen.getByText(/Home/i);
+    const text = screen.getByText(/Loading/i);
     expect(text.textContent).toBeTruthy();
   });
 });

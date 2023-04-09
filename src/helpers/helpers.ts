@@ -1,6 +1,5 @@
 import { IGameData, IPublisher } from '../interfaces/cardsIterfaces';
 
-// import { createRef, RefObject } from 'react';
 import { API_GAMES_URL, API_PUBLISHERS_URL } from '../config/API_paths';
 
 export const fetchData = async (endpoint: string, queryParams?: string): Promise<Response> => {
@@ -14,9 +13,8 @@ export const fetchData = async (endpoint: string, queryParams?: string): Promise
 
     return response;
   } catch (error) {
-    // console.log(error);
     return await Promise.reject(
-      `NOT IN THIS TASK!!! Don't be reviewer1!!!  Can't resolve promise because it is not necessary to check in this task.`
+      `Can't resolve promise because it is not necessary to check in this task.`
     );
   }
 };
