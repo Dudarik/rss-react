@@ -1,18 +1,14 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { IGameData, IPublisher } from 'interfaces/cardsIterfaces';
+import { IGameData } from 'interfaces/cardsIterfaces';
 
 export type TState = {
   games: IGameData[];
-  publishers: IPublisher[];
   searchString: string;
-  error: string;
 };
 
 const initialState: TState = {
   games: [],
-  publishers: [],
   searchString: '',
-  error: '',
 };
 
 export const gamesSlice = createSlice({
