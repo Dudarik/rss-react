@@ -32,7 +32,7 @@ const CardList = (props: IGamesData) => {
             publisherTitle = publisher.title;
           }
 
-          const cardData = Object.assign(gameCard, { publisherImage, publisherTitle });
+          const cardData = Object.assign({}, { ...gameCard, publisherImage, publisherTitle });
 
           return <Card key={gameCard.id} {...{ ...cardData, openModal }} />;
         })}

@@ -1,22 +1,43 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { IGameData, IGamesData } from 'interfaces/cardsIterfaces';
+import { IGameData, IPublisher } from 'interfaces/cardsIterfaces';
 
-const initialState: IGamesData = {
+export type TState = {
+  games: IGameData[];
+  publishers: IPublisher[];
+  searchString: string;
+  error: string;
+};
+
+const initialState: TState = {
   games: [],
   publishers: [],
+  searchString: '',
+  error: '',
 };
 
 export const gamesSlice = createSlice({
   name: '@@games',
   initialState,
   reducers: {
-    addGame: (state: IGamesData, action: PayloadAction<IGameData>) => {
-      state.games.push(action.payload);
+    addGame: (state: TState, action: PayloadAction<IGameData[]>) => {
+      state.games.push(...action.payload);
     },
-    resetGameStore: (state: IGamesData) => {
+    resetGames: (state: TState) => {
       state.games = [];
+    },
+    resetPublishers: (state: TState) => {
+      state.publishers = [];
+    },
+
+    addPublishers: (state: TState, action: PayloadAction<IPublisher[]>) => {
+      state.publishers.push(...action.payload);
+    },
+
+    addSearchString: (state: TState, action: PayloadAction<string>) => {
+      state.searchString = action.payload;
     },
   },
 });
 
-export const { addGame } = gamesSlice.actions;
+export const { addGame, resetGames, resetPublishers, addPublishers, addSearchString } =
+  gamesSlice.actions;

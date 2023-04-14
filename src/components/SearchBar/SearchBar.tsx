@@ -1,20 +1,29 @@
-import React, { ChangeEvent, FormEvent } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 import styles from './SearchBar.module.scss';
+import { useDispatch } from 'react-redux';
 
-interface ISearchProps {
-  searchString: string;
-  setSearchString: React.Dispatch<React.SetStateAction<string>>;
-  handlerSubmitBtnClick: (event: FormEvent) => void;
-}
+import { addSearchString } from '../../slices/gameSlice';
+import { useSelector } from 'react-redux';
+import { TRootState } from 'store';
 
-const SearchBar = (props: ISearchProps) => {
-  const { searchString, setSearchString, handlerSubmitBtnClick } = props;
+const SearchBar = () => {
+  const initialState = useSelector<TRootState>((state) => state.games.searchString) as string;
+
+  const [searchString, setSearchString] = useState(initialState);
+
+  const dispatch = useDispatch();
 
   const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target;
 
     setSearchString(target.value);
+  };
+
+  const handlerSubmitBtnClick = async (event: FormEvent) => {
+    event.preventDefault();
+
+    dispatch(addSearchString(searchString.trim()));
   };
 
   return (
