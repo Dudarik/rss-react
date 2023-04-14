@@ -9,7 +9,7 @@ export const api = createApi({
     getGames: builder.query<IGameData[], string>({
       query: (arg) => `games/?title_like=${arg}`,
     }),
-    getGame: builder.query({
+    getGame: builder.query<IGameData, number>({
       query: (id) => `games/${id}`,
     }),
     getPublishers: builder.query<IPublisher[], string>({

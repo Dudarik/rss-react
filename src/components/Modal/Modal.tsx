@@ -1,13 +1,13 @@
-import { IGameData, IPublisher } from 'interfaces/cardsIterfaces';
-import React, { MouseEvent, useEffect, useState } from 'react';
+import { IGameData } from 'interfaces/cardsIterfaces';
+import React, { MouseEvent } from 'react';
 
 import { PATH_TO_GAME_IMG, PATH_TO_PUBLISHER_IMG } from '../../config/img_paths';
 
-import { getGame, getPublishers } from '../../helpers';
+import GameInfo from '../GameInfo';
+import Preloader from '../Preloader/Preloader';
+import { useGetGameQuery, useGetPublishersQuery } from '../../slices/apiSlice';
 
 import styles from './Modal.module.scss';
-
-import GameInfo from '../GameInfo';
 
 interface IModalProps {
   currentGameId: number;
@@ -19,42 +19,26 @@ interface IModalProps {
 const Modal = (props: IModalProps) => {
   const { currentGameId, isModalOpen, setIsModalOpen } = props;
 
-  const defaultGameState = {
+  const { data: publishers } = useGetPublishersQuery('');
+  const { data: newGame } = useGetGameQuery(currentGameId);
+
+  let game: IGameData = {
     id: -1,
-    title: 'Unknown',
-    releaseDate: '',
-    publisher: -1,
-    players: '0-0',
-    playingTime: '0-0',
-    age: 0,
-    lang: '',
+    title: 'unknown',
+    releaseDate: 'unknown',
+    players: 'unknown',
     scoreBGG: 0,
     scoreTesera: 0,
-    image: '',
+    age: 0,
+    publisher: -1,
+    playingTime: 'unknown',
+    lang: 'unknown',
+    image: 'unknown',
     game: false,
+    blobImg: false,
   };
 
-  const [game, setGame] = useState<IGameData>(defaultGameState);
-  const [publishers, setPublishers] = useState<IPublisher[]>([]);
-
-  const closeModal = (event: MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
-    event.preventDefault();
-    setIsModalOpen(false);
-    setGame(defaultGameState);
-  };
-
-  const handlerModalClick = (event: MouseEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-  };
-
-  useEffect(() => {
-    const fetchGame = async () => {
-      if (isModalOpen) setGame(await getGame(currentGameId));
-      setPublishers(await getPublishers());
-    };
-
-    fetchGame();
-  }, [currentGameId, isModalOpen]);
+  if (newGame) game = newGame;
 
   const {
     id,
@@ -71,7 +55,17 @@ const Modal = (props: IModalProps) => {
     blobImg,
   } = game;
 
-  const publisher = publishers.find((publisher) => publisher.id === game.publisher);
+  const closeModal = (event: MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
+    event.preventDefault();
+
+    setIsModalOpen(false);
+  };
+
+  const handlerModalClick = (event: MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+  };
+
+  const publisher = publishers?.find((publisher) => publisher.id === game?.publisher);
   let publisherImage = '';
   let publisherTitle = '';
 
@@ -93,8 +87,8 @@ const Modal = (props: IModalProps) => {
             </button>
           </div>
           <div className={styles.modal_content}>
-            {id === -1 ? (
-              'Loading...'
+            {id !== currentGameId ? (
+              <Preloader />
             ) : (
               <>
                 <div className={styles.image}>
