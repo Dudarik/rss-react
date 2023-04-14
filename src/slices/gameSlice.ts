@@ -19,18 +19,12 @@ export const gamesSlice = createSlice({
   name: '@@games',
   initialState,
   reducers: {
-    addGame: (state: TState, action: PayloadAction<IGameData[]>) => {
-      state.games.push(...action.payload);
-    },
-    resetGames: (state: TState) => {
-      state.games = [];
-    },
-    resetPublishers: (state: TState) => {
-      state.publishers = [];
+    addGame: (state: TState, action: PayloadAction<IGameData>) => {
+      state.games.push(action.payload);
     },
 
-    addPublishers: (state: TState, action: PayloadAction<IPublisher[]>) => {
-      state.publishers.push(...action.payload);
+    resetGames: (state: TState) => {
+      state.games = [];
     },
 
     addSearchString: (state: TState, action: PayloadAction<string>) => {
@@ -39,5 +33,4 @@ export const gamesSlice = createSlice({
   },
 });
 
-export const { addGame, resetGames, resetPublishers, addPublishers, addSearchString } =
-  gamesSlice.actions;
+export const { addGame, resetGames, addSearchString } = gamesSlice.actions;
