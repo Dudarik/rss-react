@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { TRootState } from 'store';
 
 const SearchBar = () => {
-  const initialState = useSelector<TRootState>((state) => state.games.searchString) as string;
+  const initialState = useSelector<TRootState, string>((state) => state.games.searchString);
 
   const [searchString, setSearchString] = useState(initialState);
 

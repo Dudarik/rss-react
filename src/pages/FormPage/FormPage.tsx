@@ -1,47 +1,34 @@
-import { IGameData, IGamesData } from '../../interfaces/cardsIterfaces';
+import { IGameData } from '../../interfaces/cardsIterfaces';
 import { IPageProps } from '../../interfaces/pagesInterfaces';
+import { TRootState } from '../../store';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import FormAddCard from '../../components/FormAddCard';
 import CardsList from '../../components/CardsList';
 
-import { getPublishers } from '../../helpers';
+import { useGetPublishersQuery } from '../../slices/apiSlice';
 
 import styles from './FormPage.module.scss';
 
 const FormPage = (props: IPageProps) => {
   const { pageTitle = 'untitled', setCurrentPageTitle } = props;
-  const [state, setState] = useState<IGamesData>({
-    publishers: [],
-    games: [],
-  });
-
-  useEffect(() => {
-    const fetchPublishers = async () => {
-      const publishers = await getPublishers();
-      const games: IGameData[] = [];
-      setState({ games, publishers });
-    };
-
-    fetchPublishers();
-  }, []);
 
   useEffect(() => {
     if (setCurrentPageTitle) setCurrentPageTitle(pageTitle);
   }, [setCurrentPageTitle, pageTitle]);
 
-  const addNewCard = (newGame: IGameData) => {
-    const { games } = state;
-    games.push(newGame);
-    setState({ ...state, games });
-  };
+  const { data: publishers } = useGetPublishersQuery('');
+  const games = useSelector<TRootState, IGameData[]>((state) => state.games.games);
+
+  const cardsData = { games, publishers: publishers || [] };
 
   return (
     <main className={styles.main}>
       <h2>Add new card</h2>
-      <FormAddCard addNewCard={addNewCard} />
-      {state.games.length ? <CardsList {...state} /> : <h2>No cards added</h2>}
+      <FormAddCard />
+      {games.length ? <CardsList {...cardsData} /> : <h2>No cards added</h2>}
     </main>
   );
 };

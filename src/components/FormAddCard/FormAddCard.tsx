@@ -1,6 +1,5 @@
-import { IGameData } from '../../interfaces/cardsIterfaces';
-
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 
@@ -10,13 +9,12 @@ import CustomSelect from '../CustomSelect';
 
 import { defaultFields, selectsData, langs, isGame } from './FormAddCardDefaultValues';
 
+import { addGame } from '../../slices/gameSlice';
+
 import styles from './FormAddCard.module.scss';
 
-type TFormProps = {
-  addNewCard: (newCard: IGameData) => void;
-};
-
-const FormAddCard = (props: TFormProps) => {
+const FormAddCard = () => {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -66,7 +64,7 @@ const FormAddCard = (props: TFormProps) => {
       blobImg: true,
     };
 
-    props.addNewCard(newCard);
+    dispatch(addGame(newCard));
     setState({ ...state, infoMessage: `Game ${title} was added.` });
 
     reset();
