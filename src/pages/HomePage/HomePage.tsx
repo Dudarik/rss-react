@@ -18,19 +18,9 @@ const HomePage = (props: IPageProps) => {
 
   const searchString = useSelector<TRootState, string>((state) => state.games.searchString);
 
-  const {
-    data: games,
-    isError: isErrorGames,
-    isFetching: isFetchingGames,
-    isLoading: isLoadingGames,
-  } = useGetGamesQuery(searchString);
+  const { data: games, isLoading: isLoadingGames } = useGetGamesQuery(searchString);
 
-  const {
-    data: publishers,
-    isError: isErrorPublishers,
-    isFetching: isFetchingPublishers,
-    isLoading: isLoadingPublishers,
-  } = useGetPublishersQuery('');
+  const { data: publishers, isLoading: isLoadingPublishers } = useGetPublishersQuery('');
 
   useEffect(() => {
     if (setCurrentPageTitle) setCurrentPageTitle(pageTitle);
