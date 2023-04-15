@@ -1,18 +1,21 @@
-import { describe, test, expect, vi } from 'vitest';
+import { describe, test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import FormAddCard from '.';
 
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
+import { store } from '../../store';
 
 describe('<FormAddCard />', () => {
-  const addNewCard = vi.fn();
   test('FormAddCard mounts properly', () => {
     const wrapper = render(
-      <MemoryRouter>
-        <FormAddCard addNewCard={addNewCard} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <FormAddCard />
+        </MemoryRouter>
+      </Provider>
     );
     expect(wrapper).toBeTruthy();
 
@@ -22,9 +25,11 @@ describe('<FormAddCard />', () => {
 
   test('FormAddCard add card error', async () => {
     const wrapper = render(
-      <MemoryRouter>
-        <FormAddCard addNewCard={addNewCard} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <FormAddCard />
+        </MemoryRouter>
+      </Provider>
     );
     expect(wrapper).toBeTruthy();
 
