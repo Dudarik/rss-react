@@ -32,14 +32,17 @@ const handlerGetGames = (
   ctx: RestContext
 ) => res(ctx.status(200), ctx.json(games_data));
 
-const handlerGetPublisher = (
+const handlerGetPublishers = (
   req: RestRequest<never, PathParams<string>>,
   res: ResponseComposition<DefaultBodyType>,
   ctx: RestContext
-) => res(ctx.status(200), ctx.json(publishhers_data));
+) => {
+  // console.log('!!!!!!!!!!!!!!!!!!!MOCK PUBLISHER', req);
+  return res(ctx.status(200), ctx.json(publishhers_data));
+};
 
 export const handlers = [
   rest.get(API_GAME_URL, handlerGetGame),
   rest.get(API_GAMES_URL, handlerGetGames),
-  rest.get(API_PUBLISHERS_URL, handlerGetPublisher),
+  rest.get(API_PUBLISHERS_URL, handlerGetPublishers),
 ];

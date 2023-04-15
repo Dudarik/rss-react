@@ -1,18 +1,19 @@
-import { describe, test, expect, vi } from 'vitest';
+import { describe, test, expect } from 'vitest';
 import { render } from '@testing-library/react';
 
 import '@testing-library/jest-dom';
 import SearchBar from '.';
 import React from 'react';
 
-const setSearchString = vi.fn();
-const handlerSubmitBtnClick = vi.fn();
-const searchString = '';
+import { Provider } from 'react-redux';
+import { store } from '../../store';
 
 describe('<SearchBar />', () => {
   test('SearchBar mounts properly', () => {
     const wrapper = render(
-      <SearchBar {...{ searchString, setSearchString, handlerSubmitBtnClick }} />
+      <Provider store={store}>
+        <SearchBar />
+      </Provider>
     );
     expect(wrapper).toBeTruthy();
   });

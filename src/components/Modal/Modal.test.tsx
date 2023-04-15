@@ -4,13 +4,20 @@ import React from 'react';
 
 import Modal from '.';
 
+import { Provider } from 'react-redux';
+import { store } from '../../store';
+
 const currentGameId = 7;
 const isModalOpen = true;
 const setIsModalOpen = vi.fn();
 
 describe('<Modal /> + mock', () => {
   test('Modal mounts properly', async () => {
-    const wrapper = render(<Modal {...{ currentGameId, isModalOpen, setIsModalOpen }} />);
+    const wrapper = render(
+      <Provider store={store}>
+        <Modal {...{ currentGameId, isModalOpen, setIsModalOpen }} />
+      </Provider>
+    );
 
     expect(wrapper).toBeTruthy();
 
@@ -18,7 +25,11 @@ describe('<Modal /> + mock', () => {
   });
 
   test('Modal mounts properly and render mock', async () => {
-    render(<Modal {...{ currentGameId, isModalOpen, setIsModalOpen }} />);
+    render(
+      <Provider store={store}>
+        <Modal {...{ currentGameId, isModalOpen, setIsModalOpen }} />
+      </Provider>
+    );
 
     expect(await screen.findByText('Dune: Imperium - Rise of Ix')).toBeInTheDocument();
   });

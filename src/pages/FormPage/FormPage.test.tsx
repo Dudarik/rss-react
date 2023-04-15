@@ -3,13 +3,17 @@ import { render, screen } from '@testing-library/react';
 import { FormPage } from '../';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../store';
 
 describe('<FormPage />', () => {
   test('FormPage mounts properly', () => {
     const wrapper = render(
-      <MemoryRouter>
-        <FormPage pageTitle="Form" />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <FormPage pageTitle="Form" />
+        </MemoryRouter>
+      </Provider>
     );
     expect(wrapper).toBeTruthy();
 

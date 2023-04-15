@@ -3,13 +3,17 @@ import { render, screen } from '@testing-library/react';
 import { HomePage } from '../';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../store';
 
 describe('<HomePage />', () => {
   test('HomePage mounts properly', () => {
     const wrapper = render(
-      <MemoryRouter>
-        <HomePage pageTitle="Home" />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage pageTitle="Home" />
+        </MemoryRouter>
+      </Provider>
     );
     expect(wrapper).toBeTruthy();
 
@@ -21,9 +25,11 @@ describe('<HomePage />', () => {
 describe('mock test <HomePage />', () => {
   test('HomePage mounts properly with mock data', async () => {
     render(
-      <MemoryRouter>
-        <HomePage pageTitle="Home" />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage pageTitle="Home" />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(await screen.findByText('Dune: Imperium - Rise of Ix')).toBeInTheDocument();
