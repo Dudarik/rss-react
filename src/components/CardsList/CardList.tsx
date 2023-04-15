@@ -22,7 +22,9 @@ const CardList = (props: IGamesData) => {
 
   return (
     <>
-      <Modal {...{ currentGameId, isModalOpen, setIsModalOpen }}></Modal>
+      {currentGameId > UNKNOWN_GAME_ID && (
+        <Modal {...{ currentGameId, isModalOpen, setIsModalOpen }}></Modal>
+      )}
       <ul className={styles.card_list}>
         {games.map((gameCard) => {
           const publisher = publishers.find((publisher) => publisher.id === gameCard.publisher);
