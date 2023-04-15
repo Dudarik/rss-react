@@ -4,13 +4,17 @@ import '@testing-library/jest-dom';
 import Router from '.';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../store';
 
 describe('<Router />', () => {
   test('Router mounts properly', async () => {
     const wrapper = render(
-      <MemoryRouter>
-        <Router />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <Router />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(wrapper).toBeTruthy();

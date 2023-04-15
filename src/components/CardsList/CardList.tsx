@@ -7,11 +7,13 @@ import Card from '../Card';
 import styles from './CardList.module.scss';
 import Modal from '../Modal';
 
+const UNKNOWN_GAME_ID = -1;
+
 const CardList = (props: IGamesData) => {
   const { games, publishers } = props;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentGameId, setCurrentGameId] = useState(-1);
+  const [currentGameId, setCurrentGameId] = useState(UNKNOWN_GAME_ID);
 
   const openModal = (gameId: number) => {
     setCurrentGameId(gameId);

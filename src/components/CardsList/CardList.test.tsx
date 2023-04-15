@@ -5,6 +5,8 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import CardsList from '.';
+import { Provider } from 'react-redux';
+import { store } from '../../store';
 
 const cardsData = {
   publishers: [
@@ -37,9 +39,11 @@ const cardsData = {
 describe('<CardList />', () => {
   test('Card mounts properly', () => {
     const wrapper = render(
-      <MemoryRouter>
-        <CardsList {...cardsData} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <CardsList {...cardsData} />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(wrapper).toBeTruthy();
