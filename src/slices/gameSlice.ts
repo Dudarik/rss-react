@@ -19,14 +19,10 @@ export const gamesSlice = createSlice({
       state.games.push(action.payload);
     },
 
-    resetGames: (state: TState) => {
-      state.games = [];
-    },
-
     addSearchString: (state: TState, action: PayloadAction<string>) => {
       state.searchString = action.payload;
     },
   },
 });
 
-export const { addGame, resetGames, addSearchString } = gamesSlice.actions;
+export const { addGame, addSearchString } = gamesSlice.actions;

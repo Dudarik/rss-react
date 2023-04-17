@@ -7,6 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 import CardsList from '.';
 import { Provider } from 'react-redux';
 import { store } from '../../store';
+import userEvent from '@testing-library/user-event';
 
 const cardsData = {
   publishers: [
@@ -37,7 +38,7 @@ const cardsData = {
 };
 
 describe('<CardList />', () => {
-  test('Card mounts properly', () => {
+  test('Card mounts properly', async () => {
     const wrapper = render(
       <Provider store={store}>
         <MemoryRouter>
@@ -50,5 +51,11 @@ describe('<CardList />', () => {
 
     const text = screen.getByText(/Архитекторы западного королевства/i);
     expect(text.textContent).toBeTruthy();
+
+    await userEvent.click(text);
+
+    const err = screen.getByRole('button');
+
+    expect(err).toBeInTheDocument();
   });
 });
