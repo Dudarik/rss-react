@@ -18,9 +18,9 @@ const HomePage = (props: IPageProps) => {
 
   const searchString = useSelector<TRootState, string>((state) => state.games.searchString);
 
-  const { data: games, isLoading: isLoadingGames } = useGetGamesQuery(searchString);
+  const { data: games, isFetching: isLoadingGames } = useGetGamesQuery(searchString);
 
-  const { data: publishers, isLoading: isLoadingPublishers } = useGetPublishersQuery('');
+  const { data: publishers, isFetching: isLoadingPublishers } = useGetPublishersQuery('');
 
   useEffect(() => {
     if (setCurrentPageTitle) setCurrentPageTitle(pageTitle);
@@ -37,7 +37,7 @@ const HomePage = (props: IPageProps) => {
         This is a <span className="pageTitle">{pageTitle}</span> page
       </h2>
       <SearchBar />
-      {isLoadingGames && isLoadingPublishers ? (
+      {isLoadingGames || isLoadingPublishers ? (
         <Preloader />
       ) : games?.length && publishers?.length ? (
         <CardsList {...cards} />
