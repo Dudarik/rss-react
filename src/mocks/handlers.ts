@@ -37,7 +37,6 @@ const handlerGetPublishers = (
   res: ResponseComposition<DefaultBodyType>,
   ctx: RestContext
 ) => {
-  // console.log('!!!!!!!!!!!!!!!!!!!MOCK PUBLISHER', req);
   return res(ctx.status(200), ctx.json(publishhers_data));
 };
 
