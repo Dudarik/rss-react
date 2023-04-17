@@ -1,0 +1,28 @@
+[{
+  "id":6,
+  "title":"Dune: Imperium",
+  "releaseDate":"20.02.2020",
+  "publisher":0,
+  "players":"1 - 4",
+  "playingTime":"60 - 120",
+  "age":13,
+  "lang":"Русский",
+  "scoreBGG":8.38,
+  "scoreTesera":7.3,
+  "image":"dune_imp.webp",
+  "game":true
+},
+{
+  "id":7,
+  "title":"Dune: Imperium - Rise of Ix",
+  "releaseDate":"31.12.2021",
+  "publisher":0,
+  "players":"1 - 4",
+  "playingTime":"60 - 120",
+  "age":13,
+  "lang":"Русский",
+  "scoreBGG":8.38,
+  "scoreTesera":7.3,
+  "image":"dune_iks.webp",
+  "game":false
+}]
