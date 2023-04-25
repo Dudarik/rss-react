@@ -1,41 +1,45 @@
-import path from 'path';
-import Express from 'express';
-import React from 'react';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import counterApp from './reducers';
-import App from './App';
-import { renderToString } from 'react-dom/server';
+// import { resolve } from 'path';
+import express from 'express';
+import { createServer as createViteServer, ViteDevServer } from 'vite';
+// import serveStatic from 'serve-static';
 
-const app = Express();
-const port = 3000;
+const app = express();
+const PORT = 3000;
 
-//Serve static files
-app.use('/static', Express.static('assets'));
+const isProd = process.env.NODE_ENV === 'production';
 
-// This is fired every time the server side receives a request
-app.use(handleRender);
+let vite: ViteDevServer | undefined;
 
-// We are going to fill these out in the sections to follow
-function handleRender(req, res) {
-  // Create a new Redux store instance
-  const store = createStore(counterApp);
-
-  // Render the component to a string
-  const html = renderToString(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
-
-  // Grab the initial state from our Redux store
-  const preloadedState = store.getState();
-
-  // Send the rendered page back to the client
-  res.send(renderFullPage(html, preloadedState));
-}
-function renderFullPage(html, preloadedState) {
-  /* ... */
+if (!isProd) {
+  vite = await createViteServer({
+    server: { middlewareMode: true },
+    appType: 'custom',
+  });
+  app.use(vite.middlewares);
 }
 
-app.listen(port);
+app.use('*', async (req, res, next) => {
+  const url = req.originalUrl;
+  let renderApp;
+  try {
+    if (!isProd) {
+      renderApp = (await vite!.ssrLoadModule('./src/entry-server.tsx')).renderApp;
+    }
+
+    await renderApp(url, res);
+  } catch (e) {
+    if (!isProd) {
+      vite!.ssrFixStacktrace(e as Error);
+      next(e);
+    } else {
+      console.log((e as Error).stack);
+      res.status(500).end((e as Error).stack);
+    }
+  }
+});
+
+app.use('/static', express.static('assets'));
+
+app.listen(PORT, () => {
+  console.log(`Server started at port: ${PORT}`);
+});
