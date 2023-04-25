@@ -3,11 +3,14 @@ import ReactDOMServer from 'react-dom/server';
 import { renderToPipeableStream, type RenderToPipeableStreamOptions } from 'react-dom/server';
 import { Provider } from 'react-redux';
 
+import fs from 'fs';
+
 import { StaticRouter } from 'react-router-dom/server';
 import App from './App';
 import React from 'react';
 import { initStore } from 'store';
 import { api } from './slices/apiSlice';
+import path from 'path';
 
 const renderApp = async (req: Request, res: Response) => {
   const store = initStore();
@@ -19,18 +22,26 @@ const renderApp = async (req: Request, res: Response) => {
 
   const initState = store.getState();
 
+  const indexHtml = fs.readFileSync(path.resolve(__dirname, './dist/client/index.html')).toString();
+
+  const partsOfIndexHtml = indexHtml.split('<!--app-html-->');
+
   const stream = renderToPipeableStream(
-    <StaticRouter location={req.url}>
+    <StaticRouter location={location}>
       <Provider store={store}>
         <App />
       </Provider>
     </StaticRouter>,
     {
-      onShellReady: () => {
+      onShellReady() {
+        res.write(partsOfIndexHtml[0]);
         stream.pipe(res);
       },
-      onAllReady: () => {
-        store.dispatch(api.util.resetApiState());
+      onAllReady() {
+        res.write(`<script>
+          window.__PRELOADED_STATE__ = ${JSON.stringify(initState).replace(/</g, '\\u003c')}
+          </script>`);
+        res.write(partsOfIndexHtml[1]);
         res.end();
       },
     }
