@@ -1,14 +1,19 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { PreloadedState, combineReducers, configureStore } from '@reduxjs/toolkit';
 import { api } from './slices/apiSlice';
 import { gamesSlice } from './slices/gameSlice';
 
-export const store = configureStore({
-  reducer: {
-    games: gamesSlice.reducer,
-    [api.reducerPath]: api.reducer,
-  },
-
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
+const rootReducer = combineReducers({
+  games: gamesSlice.reducer,
+  [api.reducerPath]: api.reducer,
 });
 
-export type TRootState = ReturnType<typeof store.getState>;
+export const initStore = (preloadedState?: PreloadedState<TRootState>) =>
+  configureStore({
+    reducer: rootReducer,
+    preloadedState,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
+  });
+
+export type TRootState = ReturnType<typeof rootReducer>;
+// export type TAppStore = ReturnType<typeof initStore>;
+// export type TAppDispatch = TAppStore['dispatch'];
