@@ -12,7 +12,9 @@ const exclude = [
   '**/src/config**',
   '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
   '**/*.d.ts',
-  '**/main.tsx',
+  '**/entry-client.tsx',
+  '**/entry-server.tsx',
+  '**/server.ts',
 ];
 
 export default defineConfig({
