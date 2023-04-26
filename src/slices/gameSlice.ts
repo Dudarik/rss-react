@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { IGameData } from 'interfaces/cardsIterfaces';
+import { IGameData } from '../interfaces/cardsIterfaces';
 
 export type TState = {
   games: IGameData[];

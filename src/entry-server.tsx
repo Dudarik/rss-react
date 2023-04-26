@@ -10,7 +10,8 @@ import App from './App';
 import React from 'react';
 import { initStore } from './store';
 import { api } from './slices/apiSlice';
-import path from 'path';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 export const renderApp = async (req: Request, res: Response) => {
   const store = initStore();
@@ -22,12 +23,17 @@ export const renderApp = async (req: Request, res: Response) => {
 
   const initState = store.getState();
 
-  const indexHtml = fs.readFileSync(path.resolve(__dirname, './dist/client/index.html')).toString();
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
 
-  const partsOfIndexHtml = indexHtml.split('<!--app-html-->');
+  const indexHtml = fs
+    .readFileSync(path.resolve(__dirname, '../dist/client/index.html'))
+    .toString();
+
+  const partsOfIndexHtml = indexHtml.split('<!--rootApp-->');
 
   const stream = renderToPipeableStream(
-    <StaticRouter location={location}>
+    <StaticRouter location={req.originalUrl}>
       <Provider store={store}>
         <App />
       </Provider>
@@ -41,9 +47,12 @@ export const renderApp = async (req: Request, res: Response) => {
         res.write(`<script>
           window.__PRELOADED_STATE__ = ${JSON.stringify(initState).replace(/</g, '\\u003c')}
           </script>`);
+
         res.write(partsOfIndexHtml[1]);
         res.end();
       },
     }
   );
 };
+
+export type TrenderApp = (req: Request, res: Response) => Promise<void>;
