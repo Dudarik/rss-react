@@ -4,7 +4,7 @@ import App from './App';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from './store';
+import { store } from '../tests/setup';
 
 describe('<App />', () => {
   test('App mounts properly', () => {

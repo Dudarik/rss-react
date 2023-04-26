@@ -15,5 +15,3 @@ export const initStore = (preloadedState?: PreloadedState<TRootState>) =>
   });
 
 export type TRootState = ReturnType<typeof rootReducer>;
-// export type TAppStore = ReturnType<typeof initStore>;
-// export type TAppDispatch = TAppStore['dispatch'];

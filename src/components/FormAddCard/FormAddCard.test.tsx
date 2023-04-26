@@ -6,7 +6,7 @@ import FormAddCard from '.';
 
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
-import { store } from '../../store';
+import { store } from '../../../tests/setup';
 
 describe('<FormAddCard />', () => {
   test('FormAddCard mounts properly', () => {

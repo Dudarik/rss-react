@@ -5,7 +5,7 @@ import React from 'react';
 import Modal from '.';
 
 import { Provider } from 'react-redux';
-import { store } from '../../store';
+import { store } from '../../../tests/setup';
 
 const currentGameId = 7;
 const isModalOpen = true;

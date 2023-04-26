@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-// import ReactDOMServer from 'react-dom/server';
-import { renderToPipeableStream, type RenderToPipeableStreamOptions } from 'react-dom/server';
+import { renderToPipeableStream } from 'react-dom/server';
 import { Provider } from 'react-redux';
 
 import fs from 'fs';
@@ -44,8 +43,9 @@ export const renderApp = async (req: Request, res: Response) => {
         stream.pipe(res);
       },
       onAllReady() {
-        res.write(`<script>
-          window.__PRELOADED_STATE__ = ${JSON.stringify(initState).replace(/</g, '\\u003c')}
+        res.write(`
+          <script>
+            window.__PRELOADED_STATE__ = ${JSON.stringify(initState).replace(/</g, '\\u003c')}
           </script>`);
 
         res.write(partsOfIndexHtml[1]);
@@ -54,5 +54,3 @@ export const renderApp = async (req: Request, res: Response) => {
     }
   );
 };
-
-export type TrenderApp = (req: Request, res: Response) => Promise<void>;

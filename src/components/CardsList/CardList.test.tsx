@@ -6,7 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import CardsList from '.';
 import { Provider } from 'react-redux';
-import { store } from '../../store';
+import { store } from '../../../tests/setup';
 import userEvent from '@testing-library/user-event';
 
 const cardsData = {
