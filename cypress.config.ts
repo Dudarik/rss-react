@@ -12,8 +12,6 @@ export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:3000',
     setupNodeEvents(on, config) {
-      // implement node event listeners here
-      // config.env.codeCoverageTasksRegistered = true;
       on('file:preprocessor', vitePreprocessor());
       coverage(on, config);
       return config;
@@ -22,17 +20,6 @@ export default defineConfig({
 
   video: false,
 
-  // component: {
-  //   devServer: {
-  //     framework: 'react',
-  //     bundler: 'vite',
-  //   },
-  //   setupNodeEvents(on, config) {
-  //     // implement node event listeners here
-  //     coverage(on, config);
-  //     return config;
-  //   },
-  // },
   screenshotOnRunFailure: false,
 
   component: {
