@@ -18,5 +18,5 @@
   "ts-node": {
     "esm": true
   },
-  "include": ["./src/**/*", "styled.d.ts"]
+  "include": ["./src/**/*", "styled.d.ts", "cypress/e2e/spec.cy.ts"]
 }
