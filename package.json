@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "nodemon ./src/server.ts",
+    "dev": "npm run build && nodemon ./src/server.ts",
     "build:client": "vite build --outDir dist/client",
     "build:server": "vite build --outDir dist/server --ssr src/entry-server.tsx",
     "build": "npm run build:client && npm run build:server",
@@ -15,7 +15,7 @@
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "lint": "eslint ./src",
-    "cyt:e2e": "npm run cyt:prep && start-server-and-test dev http-get://localhost:3000 cy:open-e2e && npx nyc report && npx nyc report --reporter=text-summary",
+    "cyt:e2e": "npm run cyt:prep && start-server-and-test dev http-get://localhost:3000 cy:run-e2e && npx nyc report && npx nyc report --reporter=text-summary",
     "cyt:clean": "rimraf coverage && rimraf .nyc_output && rimraf instrumented",
     "cyt:prep": "npm run cyt:clean && npx nyc instrument --compact=false src instrumented",
     "cy:open-e2e": "cypress open --e2e --browser chrome",
