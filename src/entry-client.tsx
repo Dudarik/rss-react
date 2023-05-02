@@ -17,8 +17,6 @@ const customWindow: TWindowCustom = window;
 
 const store = initStore(customWindow.__PRELOADED_STATE__);
 
-console.log(window);
-
 delete customWindow.__PRELOADED_STATE__;
 
 hydrateRoot(
