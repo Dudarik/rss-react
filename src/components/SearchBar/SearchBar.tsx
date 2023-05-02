@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { addSearchString } from '../../slices/gameSlice';
 import { useSelector } from 'react-redux';
-import { TRootState } from 'store';
+import { TRootState } from '../../store';
 
 const SearchBar = () => {
   const initialState = useSelector<TRootState, string>((state) => state.games.searchString);
@@ -27,7 +27,7 @@ const SearchBar = () => {
   };
 
   return (
-    <form className={styles.search_form} onSubmit={handlerSubmitBtnClick}>
+    <form className={styles.search_form} onSubmit={handlerSubmitBtnClick} id="searchForm">
       <input
         type="search"
         name="searchString"

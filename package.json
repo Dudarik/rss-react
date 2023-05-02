@@ -16,11 +16,13 @@
     "test:run": "vitest run",
     "lint": "eslint ./src",
     "cyt:e2e": "npm run cyt:prep && start-server-and-test dev http-get://localhost:3000 cy:run-e2e && npx nyc report && npx nyc report --reporter=text-summary",
+    "cyt2:e2e": "start-server-and-test start http-get://localhost:3000 cy:run-e2e && npx nyc report && npx nyc report --reporter=text-summary",
+
     "cyt:clean": "rimraf coverage && rimraf .nyc_output && rimraf instrumented",
     "cyt:prep": "npm run cyt:clean && npx nyc instrument --compact=false src instrumented",
     "cy:open-e2e": "cypress open --e2e --browser chrome",
     "cy:open-unit": "cypress open --component --browser chrome",
-    "cy:run-e2e": "cypress run --headed coverage=true",
+    "cy:run-e2e": "cypress run coverage=true",
     "cy:run-unit": "cypress run --component",
     "deploy": "npm run build && npx gh-pages -d dist -e ."
   },

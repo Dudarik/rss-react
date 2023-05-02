@@ -1,4 +1,4 @@
-import { IPageProps } from 'interfaces/pagesInterfaces';
+import { IPageProps } from '../../interfaces/pagesInterfaces';
 
 import CardsList from '../../components/CardsList';
 import SearchBar from '../../components/SearchBar';
@@ -9,7 +9,7 @@ import { useGetGamesQuery, useGetPublishersQuery } from '../../slices/apiSlice';
 
 import { TRootState } from '../../store';
 import { useSelector } from 'react-redux';
-import { IGamesData } from 'interfaces/cardsIterfaces';
+import { IGamesData } from '../../interfaces/cardsIterfaces';
 
 import styles from './HomePage.module.scss';
 

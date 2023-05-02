@@ -26,7 +26,7 @@ const FormPage = (props: IPageProps) => {
 
   return (
     <main className={styles.main}>
-      <h2>Add new card</h2>
+      <h2 className="pageTitle">Add new card</h2>
       <FormAddCard />
       {games.length ? <CardsList {...cardsData} /> : <h2>No cards added</h2>}
     </main>
